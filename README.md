@@ -4,6 +4,8 @@ Project to analyze finance of various brands.
 - You may use smaenv virtual environment to use the required packages:
 	./smaenv/bin/activate (Windows)
 	source smaenv/bin/activate (Linux/ Mac)
+- Download git from https://git-scm.com/download/win to use git from git bash/ CMD.
+
 
 1. Fork the repo. (not required now)
 2. Clone the repo into your local machine. Browse into your projects directory then:
