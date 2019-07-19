@@ -1,9 +1,13 @@
 # sma-crossover-strategy
 Project to analyze finance of various brands.
 
-- You may use smaenv virtual environment to use the required packages:
-	./smaenv/bin/activate (Windows)
-	source smaenv/bin/activate (Linux/ Mac)
+- You may use virtual environment to use the required packages:
+- First create virtual environment using virtualenv:
+	virtualenv *envname* --python=python3.7
+	pip install -r requirements.txt
+Then, to activate the virtul environment:
+	./*envname*/Scripts/activate (Windows)
+	source *envname*/bin/activate (Linux/ Mac)
 - Download git from https://git-scm.com/download/win to use git from git bash/ CMD.
 
 
