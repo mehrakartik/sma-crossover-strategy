@@ -1,8 +1,7 @@
 # Importing the libraries
 import pandas as pd
-import pandas_datareader as pdr
+from pandas_datareader import get_data_yahoo
 from datetime import datetime
-import matplotlib.pyplot as plt
 import plotly.graph_objs as go
 from plotly.offline import plot
 
@@ -14,7 +13,7 @@ class StockData:
 
         try:
             # Reading data from pandas datareader
-            self.stock_df = pdr.get_data_yahoo(self.ticker, start = start, end = end)
+            self.stock_df = get_data_yahoo(self.ticker, start = start, end = end)
 
             # Writing the data into a CSV, in case API read fails
             self.stock_df.to_csv('Datasets/' + self.ticker + '.csv')
@@ -192,64 +191,87 @@ class StockData:
                            hovermode = 'x', title = self.ticker)
         return go.Figure(data = [total, buy_signal, sell_signal], layout = layout)
 
+# Function when comparing stocks
 def onCompare(request):
+    # Ticker to be compared to
     ticker = request.GET.get('text', 'default')
     if ticker == 'default':
         return
+
+    # Adding to active stocks
     active_stocks[ticker] = StockData(ticker)
-    start_dates = []
-    end_dates = []
-    for key in active_stocks:
-        if key == 'fig':
-            continue
-        start_dates.append(active_stocks[key].start_date)
-        end_dates.append(active_stocks[key].end_date)
-        start = max(start_dates)
-        end = min(end_dates)
+
+    # Determining best date range
+    start = max(active_stocks[ticker].start_date for ticker in active_stocks if ticker != 'fig')
+    end = min(active_stocks[ticker].end_date for ticker in active_stocks if ticker != 'fig')
+
+    # Adding ticker trace to current figure
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice(start = start, end = end,
                                                                   name = ticker, fig = active_stocks['fig'])
+
     plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
+
     return render(request, 'Compare.html')
 
+# Function when searching for stocks
 def onSubmit(request):
+    # Searched ticker
     ticker = request.GET.get('text', 'default')
     if ticker == 'default':
         return
+
+    # Adding to active stocks with figure
     active_stocks[ticker] = StockData(ticker)
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice(name = ticker)
+
     plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
     # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
     return render(request, 'Chart.html')    # Summary function in progress
 
+# Function when choosing option for moving windows
+# We should remove it because of SMA_CS
 def onMovingWindows(request):
     short_window = request.GET.get('short_window', 'default')
     long_window = request.GET.get('long_window', 'default')
     if short_window == 'default' or long_window == 'default':
         return
+
     for key in active_stocks:
         if key != 'fig':
             plot(active_stocks[key].movingWindows(), filename = 'Page.html', auto_open = False)
+
     return render(request, 'MovingWindows.html')
 
+# Function for Simple Moving Average Crossover Strategy
 def onSMA(request):
+    # Slow (long) and fast (short) moving windows
     short_window = request.GET.get('short_window', 'default')
     long_window = request.GET.get('long_window', 'default')
     if short_window == 'default' or long_window == 'default':
         return
+
     for key in active_stocks:
         if key != 'fig':
             plot(active_stocks[key].SMA_CS(), filename = 'Page.html', auto_open = False)
+
     return render(request, 'SMA.html')
 
+# Function when removing SMA option
 def onRemoveMovingOrSMA(request):
     plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
     return render(request, 'Chart.html')
 
+# Function when removing comparison stock
 def onRemoveComparison(request):
+    # Ticker to remove
     ticker = None # Pass ticker of button to remove
+
+    # Removing from active stocks and figure as well
     active_stocks.pop(ticker)
     active_stocks['fig'].data = tuple(filter(lambda stock: stock.name != ticker, active_stocks['fig'].data))
+
     plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
+
     return render(request, 'Compare.html') if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html')
 
 # Currently active stocks and figure
