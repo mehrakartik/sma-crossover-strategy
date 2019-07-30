@@ -64,8 +64,8 @@ class StockData:
         data = go.Scatter(x = ranged_df.index, y = ranged_df['Close'], name = name)
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
-                           hovermode = 'x', title = self.ticker)
-        fig.update_layout()
+                           hovermode = 'x', title = self.ticker,
+                           xaxis_rangeslider_visible = True)
 
         return go.Figure(data = data, layout = layout) if not fig else fig.add_trace(data)
 
@@ -88,7 +88,8 @@ class StockData:
         # Plot adjusted close price, short and long windows rolling means
         layout = go.Layout(xaxis = {'showgrid': kwargs['grid'], 'title': 'Date'},
                            yaxis = {'showgrid': kwargs['grid'], 'title': 'Price in $'},
-                           hovermode = 'x', title = self.ticker)
+                           hovermode = 'x', title = self.ticker,
+                           xaxis_rangeslider_visible = True)
         adj_trace = go.Scatter(x = temp_df.index, y = temp_df['Adj Close'], name = 'Adj Close')
         short_trace = go.Scatter(x = temp_df.index, y = temp_df[f'{short_window} days'], name = f'{short_window} days')
         long_trace = go.Scatter(x = temp_df.index, y = temp_df[f'{long_window} days'], name = f'{long_window} days')
@@ -142,7 +143,8 @@ class StockData:
         # Plotting SMAs
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
-                           hovermode = 'x', title = self.ticker)
+                           hovermode = 'x', title = self.ticker,
+                           xaxis_rangeslider_visible = True)
         return go.Figure(data = [short_avg, long_avg, buy_signal, sell_signal], layout = layout)
 
     # Backtesting
@@ -188,7 +190,8 @@ class StockData:
                                  mode = 'markers', showlegend = False, hoverinfo = 'skip')
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
-                           hovermode = 'x', title = self.ticker)
+                           hovermode = 'x', title = self.ticker,
+                           xaxis_rangeslider_visible = True)
         return go.Figure(data = [total, buy_signal, sell_signal], layout = layout)
 
 # Function when comparing stocks
