@@ -57,11 +57,7 @@ class StockData:
         return self.stock_df.loc[start:end].copy()
 
     # Plotting closing prices
-    def plotClosingPrice(self, start = None, end = None, name = None, fig = None):
-        if fig and not name:
-            raise NameError('Please provide a name to plot different stocks.')
-            return
-
+    def plotClosingPrice(self, start = None, end = None, fig = None):
         # Ranging DataFrame
         ranged_df = self.getDataInRange(start, end)
 
@@ -75,86 +71,47 @@ class StockData:
         return go.Figure(data = data, layout = layout) if not fig else fig.add_trace(data)
 
     # Moving Windows
-    def movingWindows(self, short_window = 40, long_window  = 100, **kwargs):
+    def movingWindows(self, short_window = 40, long_window  = 100):
         '''
         Parameters
         ----------
         short_window: Fast moving window
         long_window: Slow moving window
-
-        **kwargs
-        --------
-        grid: bool. Default is True
-        start: datetime. Start date of plotting
-        end: datetime. End date of plotting
         '''
 
-        # Handling kwargs
-        accepted_kwargs = ('grid', 'start', 'end')
-        for key in kwargs:
-            if key not in accepted_kwargs:
-                raise ValueError(f"'{key}' is invalid key!\nAccepted keys are: {accepted_kwargs}")
-        # Grid
-        if 'grid' not in kwargs:
-            kwargs['grid'] = True
-        elif type(kwargs['grid']) != bool:
-            raise TypeError("'type' of 'grid' must be bool.")
-        # Start
-        if 'start' not in kwargs:
-            kwargs['start'] = self.start_date
-        elif type(kwargs['start']) != datetime:
-            raise TypeError("'type' of 'start' must be datetime.")
-        # End
-        if 'end' not in kwargs:
-            kwargs['end'] = self.end_date
-        elif type(kwargs['end']) != datetime:
-            raise TypeError("'type' of 'end' must be datetime.")
-
-        # Ranging DataFrame
-        ranged_df = self.getDataInRange(start = kwargs['start'], end = kwargs['end'])
+        # Temporary DataFrame
+        temp_df = self.stock_df.copy()
 
         # Short and long moving windows rolling mean
-        ranged_df[f'{short_window} days'] = ranged_df['Adj Close'].rolling(window = short_window).mean()
-        ranged_df[f'{long_window} days'] = ranged_df['Adj Close'].rolling(window = long_window).mean()
+        temp_df[f'{short_window} days'] = temp_df['Adj Close'].rolling(window = short_window).mean()
+        temp_df[f'{long_window} days'] = temp_df['Adj Close'].rolling(window = long_window).mean()
 
         # Plot adjusted close price, short and long windows rolling means
         layout = go.Layout(xaxis = {'showgrid': kwargs['grid'], 'title': 'Date'},
                            yaxis = {'showgrid': kwargs['grid'], 'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker)
-        adj_trace = go.Scatter(x = ranged_df.index, y = ranged_df['Adj Close'], name = 'Adj Close')
-        short_trace = go.Scatter(x = ranged_df.index, y = ranged_df[f'{short_window} days'], name = f'{short_window} days')
-        long_trace = go.Scatter(x = ranged_df.index, y = ranged_df[f'{long_window} days'], name = f'{long_window} days')
+        adj_trace = go.Scatter(x = temp_df.index, y = temp_df['Adj Close'], name = 'Adj Close')
+        short_trace = go.Scatter(x = temp_df.index, y = temp_df[f'{short_window} days'], name = f'{short_window} days')
+        long_trace = go.Scatter(x = temp_df.index, y = temp_df[f'{long_window} days'], name = f'{long_window} days')
         return go.Figure(data = [adj_trace, short_trace, long_trace], layout = layout)
 
     # Simple Moving Average - Crossover Strategy
-    def SMA_CS(self, short_window = 40, long_window = 100, **kwargs):
+    def SMA_CS(self, short_window = 40, long_window = 100):
         '''
         Parameters
         ----------
         short_window: Fast moving window
         long_window: Slow moving window
-
-        **kwargs
-        --------
-        start: datetime. Start date of plotting
-        end: datetime. End date of plotting
         '''
 
-        # Ranged Data
-        if 'start' not in kwargs:
-            kwargs['start'] = self.start_date
-        if 'end' not in kwargs:
-            kwargs['end'] = self.end_date
-        ranged_df = self.getDataInRange(start = kwargs['start'], end = kwargs['end'])
-
         # Initialize signals DataFrame with Signal column having values 0
-        self.signals = pd.DataFrame(data = 0, index = ranged_df.index, columns = ['Signal'])
+        self.signals = pd.DataFrame(data = 0, index = self.stock_df.index, columns = ['Signal'])
 
         # Create short and long moving averages columns
-        self.signals[f'Short ({short_window} days)'] = ranged_df['Close'].rolling(window = short_window,
+        self.signals[f'Short ({short_window} days)'] = self.stock_df['Close'].rolling(window = short_window,
                                                                                   min_periods = 1,
                                                                                   center = False).mean()
-        self.signals[f'Long ({long_window} days)'] = ranged_df['Close'].rolling(window = long_window,
+        self.signals[f'Long ({long_window} days)'] = self.stock_df['Close'].rolling(window = long_window,
                                                                            min_periods = 1,
                                                                            center = False).mean()
 
