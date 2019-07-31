@@ -18,7 +18,6 @@ class StockData:
         try:
             # Reading data from pandas datareader
             self.stock_df = get_data_yahoo(self.ticker, end = end)
-            print(self.ticker)
 
             # Writing the data into a CSV, in case API read fails
             file = StringIO()
@@ -94,7 +93,7 @@ class StockData:
         short_window: Fast moving window
         long_window: Slow moving window
         '''
-
+        print(short_window, long_window)
         # Initialize signals DataFrame with Signal column having values 0
         self.signals = pd.DataFrame(data = 0, index = self.stock_df.index, columns = ['Signal'])
 
@@ -188,22 +187,28 @@ class StockData:
 # Function when accessing hovermode
 def onHome(request):
     active_stocks.clear()
-    offline.plot(fig, auto_open = False)
-    driver = webdriver.PhantomJS(executable_path="phantomjs.exe")
-    # driver.set_window_size(1000, 500)
-    driver.get('temp-plot.html')
-    driver.save_screenshot('my_plot.png')
+    # import plotly.offline as offline
+    # from selenium import webdriver
+    # for key in trending_stocks:
+    #     offline.plot(trending_stocks[key]['fig'], image = 'png', auto_open = False)
+    #     driver = webdriver.PhantomJS(executable_path="F:\\django project\\mysite\\static\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe")
+    #     # driver.set_window_size(1000, 500)
+    #     driver.get('temp-plot.html')
+    #     driver.save_screenshot(f'{trending_stocks[key]}.png')
     return render(request, 'index.html')
 
 # Function when comparing stocks
 def onCompare(request):
     # Ticker to be compared to
     ticker = request.GET.get('text', 'default')
-    if ticker == 'default':
-        return
+    if not ticker:
+        return HttpResponse('Please enter valid stock ticker')
 
     # Adding to active stocks
-    active_stocks[ticker] = StockData(ticker)
+    if ticker not in active_stocks:
+        active_stocks[ticker] = StockData(ticker)
+    else:
+        return render(request, 'Compare.html')
 
     # Determining best date range
     start = max(active_stocks[ticker].start_date for ticker in active_stocks if ticker != 'fig')
@@ -211,9 +216,9 @@ def onCompare(request):
 
     # Adding ticker trace to current figure
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice(start = start, end = end,
-                                                                  name = ticker, fig = active_stocks['fig'])
+                                                                  fig = active_stocks['fig'])
 
-    plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
+    plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
 
     return render(request, 'Compare.html')
 
@@ -221,14 +226,14 @@ def onCompare(request):
 def onSubmit(request):
     # Searched ticker
     ticker = request.GET.get('text', 'default')
-    if ticker == 'default':
+    if not ticker:
         return
 
     # Adding to active stocks with figure
     active_stocks[ticker] = StockData(ticker)
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
 
-    plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
+    plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
     # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
     return render(request, 'Chart.html')    # Summary function in progress
 
@@ -242,26 +247,46 @@ def onTrending(request):
     active_stocks['fig'] = trending_stocks[ticker]['fig']
     plot(active_stocks['fig'], filename = 'templates/Page.html', auto_open = False)
     # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
-    return render(request, 'Page.html')    # Summary function in progress
+    return render(request, 'static/Page.html')    # Summary function in progress
 
 # Function for Simple Moving Average Crossover Strategy
 def onSMA(request):
     # Slow (long) and fast (short) moving windows
-    short_window = request.GET.get('short_window', 'default')
-    long_window = request.GET.get('long_window', 'default')
-    if short_window == 'default' or long_window == 'default':
-        return
+    short_window = request.GET.get('short_window', 40)
+    long_window = request.GET.get('long_window', 100)
+    print(short_window,long_window)
+    print(type(short_window), type(long_window))
+    
+    short_window, long_window = int(short_window), int(long_window)
+    
+    if not short_window or not long_window:
+        short_window = 40
+        long_window = 100
 
     for key in active_stocks:
         if key != 'fig':
             plot(active_stocks[key].SMA_CS(short_window = short_window, long_window = long_window),
-            filename = 'Page.html', auto_open = False)
+                filename = 'static/Page.html', auto_open = False)
+            break
 
-    return render(request, 'SMA.html')
+    return render(request, 'SMACS.html')
+
+# Function on backtest
+def onBacktest(request):
+    initial_capital = request.GET.get('initial_capital', 1000000)
+    shares = request.GET.get('shares', 100)
+
+    for key in active_stocks:
+        if key != 'fig':
+            plot(active_stocks[key].backtest(initial_capital = initial_capital, shares = shares),
+                filename = 'static/Page.html', auto_open = False)
+            break
+
+    return render(request, 'Backtest.html')
 
 # Function when removing SMA option
 def onRemoveSMA(request):
-    plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
+    plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
     return render(request, 'Chart.html')
 
 # Function when removing comparison stock
@@ -273,7 +298,7 @@ def onRemoveComparison(request):
     active_stocks.pop(ticker)
     active_stocks['fig'].data = tuple(filter(lambda stock: stock.name != ticker, active_stocks['fig'].data))
 
-    plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
+    plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
 
     return render(request, 'Compare.html') if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html')
 
