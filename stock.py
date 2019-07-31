@@ -188,6 +188,11 @@ class StockData:
 # Function when accessing hovermode
 def onHome(request):
     active_stocks.clear()
+    offline.plot(fig, auto_open = False)
+    driver = webdriver.PhantomJS(executable_path="phantomjs.exe")
+    # driver.set_window_size(1000, 500)
+    driver.get('temp-plot.html')
+    driver.save_screenshot('my_plot.png')
     return render(request, 'index.html')
 
 # Function when comparing stocks
