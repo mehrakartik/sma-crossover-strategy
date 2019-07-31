@@ -1,0 +1,193 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!doctype html>
+{% load staticfiles %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+<link rel="stylesheet" type="text/css" href='{% static "stylesheet.css" %}'>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
+    <title>Home</title>
+  </head>
+  <body style="background: linear-gradient(to bottom left, #9999ff 5%, #66ccff 90%);
+">
+
+  	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/home">Stocks</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/aboutus">About us</a>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="#">Compare</a>
+      </li> -->
+      
+
+
+
+      
+
+
+    </ul>
+
+    
+ 
+
+  </div>
+
+  <div>
+  	  <!-- <form class="form-inline" action="/textgrab" method="get">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form> -->
+
+
+  <!-- <!-- <img src="stock-icon.png" height="10" width="10" style="float:right;"> -->
+  <a class="navbar-brand" href="/home">
+    <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
+  </a> 
+  	
+
+
+
+  </div>
+
+
+</nav>
+
+
+<!-- 
+<script type="text/javascript">
+$(".alert").alert('close')
+</script>
+ -->
+
+<div class="alert alert-success alert-dismissible fade show" role="alert" >
+  <strong>Congratulations!</strong> To being on the best stock predictors.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+<form action="/submit" method="get">
+
+<div class="container">
+      <div class="d-flex justify-content-center">
+        <div class="searchbar">
+          <input class="search_input" type="text" name="text" placeholder="Search...">
+          <button type ="submit"  class="search_icon"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+<!-- <svg width="400" height="110">
+   <rect width="300" height="100" style="stroke-width:3;border-radius: 50px" />    
+	<form action="/submit" method="get">
+		
+		<input type="text" name="text"  placeholder="Search...."  style=" color:#100404; margin-top:10px; margin-left:10px" >
+    <button type="submit" style="margin-left: 0px" ><i class="fa fa-search"></i></button>
+
+  </form> -->
+</svg>
+<br>
+<br>
+<br>
+
+
+<div class= "container-fluid">
+  <h1 align="center" style="color: white">Trending Stocks</h1>
+
+  
+<div class="row">
+
+    <div  class="col">
+      <form action="/trending" method="get">
+      <input type="image" name="AAPL" src='{% static "backgroundg.jpg" %}' style="float:left;height: 50vh;width: 40vw;margin-left: 60px" >
+      </form>
+    </div>
+    
+     <div  class="col">
+      <form action="/trending" method="get">
+      <input type="image" name="GOOG" src='{% static "backgroundg.jpg" %}' style="float:right;height: 50vh;width: 40vw;margin-right: 60px">
+      </form>
+    </div>
+    
+    
+</div>
+<br>
+<br>
+
+  
+<div class="row">
+
+    <div  class="col">
+      <form action="/trending" method="get">
+      <input type="image" name="AAPL" src='{% static "backgroundg.jpg" %}' style="float:left;height: 50vh;width: 40vw;margin-left: 60px" >
+      </form>
+    </div>
+    
+     <div  class="col">
+      <form action="/trending" method="get">
+      <input type="image" name="GOOG" src='{% static "backgroundg.jpg" %}' style="float:right;height: 50vh;width: 40vw;margin-right: 60px">
+      </form>
+    </div>
+    
+    </div>
+    
+    
+</div>
+    
+</div>
+<br>
+<br>
+
+
+
+ 
+</div>
+
+
+
+
+
+    <!-- Optional JavaScript
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+
+</html>
