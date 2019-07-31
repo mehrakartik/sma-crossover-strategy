@@ -241,7 +241,8 @@ def onMovingWindows(request):
 
     for key in active_stocks:
         if key != 'fig':
-            plot(active_stocks[key].movingWindows(), filename = 'Page.html', auto_open = False)
+            plot(active_stocks[key].movingWindows(short_window = short_window, long_window = long_window),
+            filename = 'Page.html', auto_open = False)
 
     return render(request, 'MovingWindows.html')
 
@@ -255,7 +256,8 @@ def onSMA(request):
 
     for key in active_stocks:
         if key != 'fig':
-            plot(active_stocks[key].SMA_CS(), filename = 'Page.html', auto_open = False)
+            plot(active_stocks[key].SMA_CS(short_window = short_window, long_window = long_window),
+            filename = 'Page.html', auto_open = False)
 
     return render(request, 'SMA.html')
 
