@@ -86,32 +86,6 @@ class StockData:
 
         return go.Figure(data = data, layout = layout) if not fig else fig.add_trace(data)
 
-    # Moving Windows
-    def movingWindows(self, short_window = 40, long_window  = 100):
-        '''
-        Parameters
-        ----------
-        short_window: Fast moving window
-        long_window: Slow moving window
-        '''
-
-        # Temporary DataFrame
-        temp_df = self.stock_df.copy()
-
-        # Short and long moving windows rolling mean
-        temp_df[f'{short_window} days'] = temp_df['Adj Close'].rolling(window = short_window).mean()
-        temp_df[f'{long_window} days'] = temp_df['Adj Close'].rolling(window = long_window).mean()
-
-        # Plot adjusted close price, short and long windows rolling means
-        layout = go.Layout(xaxis = {'showgrid': kwargs['grid'], 'title': 'Date'},
-                           yaxis = {'showgrid': kwargs['grid'], 'title': 'Price in $'},
-                           hovermode = 'x', title = self.ticker,
-                           xaxis_rangeslider_visible = True)
-        adj_trace = go.Scatter(x = temp_df.index, y = temp_df['Adj Close'], name = 'Adj Close')
-        short_trace = go.Scatter(x = temp_df.index, y = temp_df[f'{short_window} days'], name = f'{short_window} days')
-        long_trace = go.Scatter(x = temp_df.index, y = temp_df[f'{long_window} days'], name = f'{long_window} days')
-        return go.Figure(data = [adj_trace, short_trace, long_trace], layout = layout)
-
     # Simple Moving Average - Crossover Strategy
     def SMA_CS(self, short_window = 40, long_window = 100):
         '''
@@ -211,6 +185,11 @@ class StockData:
                            xaxis_rangeslider_visible = True)
         return go.Figure(data = [total, buy_signal, sell_signal], layout = layout)
 
+# Function when accessing hovermode
+def onHome(request):
+    active_stocks.clear()
+    return render(request, 'index.html')
+
 # Function when comparing stocks
 def onCompare(request):
     # Ticker to be compared to
@@ -248,20 +227,17 @@ def onSubmit(request):
     # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
     return render(request, 'Chart.html')    # Summary function in progress
 
-# Function when choosing option for moving windows
-# We should remove it because of SMA_CS
-def onMovingWindows(request):
-    short_window = request.GET.get('short_window', 'default')
-    long_window = request.GET.get('long_window', 'default')
-    if short_window == 'default' or long_window == 'default':
-        return
+# Function when clicking on trending stocks
+def onTrending(request):
+    # Get ticker from image
+    ticker = tuple(request.GET.keys())[0].split('.')[0]
 
-    for key in active_stocks:
-        if key != 'fig':
-            plot(active_stocks[key].movingWindows(short_window = short_window, long_window = long_window),
-            filename = 'Page.html', auto_open = False)
-
-    return render(request, 'MovingWindows.html')
+    # Adding to active stocks with figure
+    active_stocks[ticker] = trending_stocks[ticker]['obj']
+    active_stocks['fig'] = trending_stocks[ticker]['fig']
+    plot(active_stocks['fig'], filename = 'templates/Page.html', auto_open = False)
+    # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
+    return render(request, 'Page.html')    # Summary function in progress
 
 # Function for Simple Moving Average Crossover Strategy
 def onSMA(request):
@@ -279,7 +255,7 @@ def onSMA(request):
     return render(request, 'SMA.html')
 
 # Function when removing SMA option
-def onRemoveMovingOrSMA(request):
+def onRemoveSMA(request):
     plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
     return render(request, 'Chart.html')
 
@@ -298,13 +274,9 @@ def onRemoveComparison(request):
 
 # Currently active stocks and figure
 active_stocks = {}
-
-def onTrending(request):
-    ticker = tuple(request.GET.keys())[0].split('.')[0]
-    print(active_stocks)
-    # Adding to active stocks with figure
-    active_stocks[ticker] = StockData(ticker)
-    active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
-    plot(active_stocks['fig'], filename = 'templates/Page.html', auto_open = False)
-    # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
-    return render(request, 'Page.html')    # Summary function in progress
+trending_stocks = {'GOOG': {'obj': StockData('GOOG')},
+                    'AAPL': {'obj': StockData('AAPL')},
+                    'AMZN': {'obj': StockData('AMZN')},
+                    'MSFT': {'obj': StockData('MSFT')}}
+for key in trending_stocks:
+    trending_stocks[key]['fig'] = trending_stocks[key]['obj'].plotClosingPrice()
