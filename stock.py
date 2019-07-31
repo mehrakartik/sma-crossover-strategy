@@ -1,4 +1,8 @@
 # Importing the libraries
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.core.files.storage import default_storage
+from io import StringIO
 import pandas as pd
 from pandas_datareader import get_data_yahoo
 from datetime import datetime
@@ -8,15 +12,28 @@ from plotly.offline import plot
 class StockData:
     def __init__(self, ticker):
         self._ticker = ticker.upper()
-        start = datetime(1900, 1, 1)
+        start = datetime(1950, 1, 1)
         end = datetime.today()
 
         try:
             # Reading data from pandas datareader
-            self.stock_df = get_data_yahoo(self.ticker, start = start, end = end)
+            self.stock_df = get_data_yahoo(self.ticker, end = end)
+            print(self.ticker)
 
             # Writing the data into a CSV, in case API read fails
-            self.stock_df.to_csv('Datasets/' + self.ticker + '.csv')
+            file = StringIO()
+            self.stock_df.to_csv(file)
+            file.seek(0)
+            try:
+                temp = open('Datasets/' + self.ticker + '.csv')
+                temp.close()
+                from subprocess import run
+                run(f"del Datasets\\{self.ticker}.csv", shell = True)
+            except:
+                pass
+            finally:
+                default_storage.save('Datasets/' + self.ticker + '.csv', file)
+            file.close()
         except:
             self.stock_df = pd.read_csv('Datasets/' + self.ticker + '.csv', index_col = 'Date', parse_dates = True)
 
@@ -61,7 +78,7 @@ class StockData:
         ranged_df = self.getDataInRange(start, end)
 
         # Data to plot
-        data = go.Scatter(x = ranged_df.index, y = ranged_df['Close'], name = name)
+        data = go.Scatter(x = ranged_df.index, y = ranged_df['Close'], name = self.ticker)
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
@@ -225,7 +242,7 @@ def onSubmit(request):
 
     # Adding to active stocks with figure
     active_stocks[ticker] = StockData(ticker)
-    active_stocks['fig'] = active_stocks[ticker].plotClosingPrice(name = ticker)
+    active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
 
     plot(active_stocks['fig'], filename = 'Page.html', auto_open = False)
     # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
@@ -282,5 +299,12 @@ def onRemoveComparison(request):
 # Currently active stocks and figure
 active_stocks = {}
 
-if __name__ == 'main':
-    pass
+def onTrending(request):
+    ticker = tuple(request.GET.keys())[0].split('.')[0]
+    print(active_stocks)
+    # Adding to active stocks with figure
+    active_stocks[ticker] = StockData(ticker)
+    active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
+    plot(active_stocks['fig'], filename = 'templates/Page.html', auto_open = False)
+    # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
+    return render(request, 'Page.html')    # Summary function in progress
