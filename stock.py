@@ -3,10 +3,12 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.files.storage import default_storage
 from io import StringIO
-from os.path import exists
-from os import remove
+from os.path import exists, join
+from os import remove, getcwd
+from gc import collect
 import pandas as pd
 from pandas_datareader import get_data_yahoo
+from pandas_datareader._utils import RemoteDataError
 from datetime import datetime
 import plotly.graph_objs as go
 from plotly.offline import plot
@@ -25,10 +27,18 @@ class StockData:
             file = StringIO()
             self.stock_df.to_csv(file)
             file.seek(0)
-            if exists(f'Datasets/{self.ticker}.csv'):
-                remove(f'Datasets/{self.ticker}.csv')
-            default_storage.save(f'Datasets/{self.ticker}.csv', file)
+            if exists(join(getcwd(), 'Datasets', self.ticker, '.csv')):
+            	remove(join(getcwd(), 'Datasets', self.ticker, '.csv'))
+            default_storage.save(join(getcwd(), 'Datasets', self.ticker, '.csv'), file)
             file.close()
+
+            # file = StringIO()
+            # self.stock_df.to_csv(file)
+            # file.seek(0)
+            # if exists(f'Datasets/{self.ticker}.csv'):
+            #     remove(f'Datasets/{self.ticker}.csv')
+            # default_storage.save(f'Datasets/{self.ticker}.csv', file)
+            # file.close()
 
         #     file = StringIO()
         #     self.stock_df.to_csv(file)
@@ -43,7 +53,9 @@ class StockData:
         #     finally:
         #         default_storage.save('Datasets/' + self.ticker + '.csv', file)
         #     file.close()
-        except:
+    	except RemoteDataError:
+    		return None
+        else:
             self.stock_df = pd.read_csv('Datasets/' + self.ticker + '.csv', index_col = 'Date', parse_dates = True)
 
         # Start and end date of the stock's data
@@ -92,6 +104,7 @@ class StockData:
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
                            xaxis_rangeslider_visible = True)
+        fig.update_layout(title = None) if fig else None
 
         return go.Figure(data = data, layout = layout) if not fig else fig.add_trace(data)
 
@@ -196,29 +209,44 @@ class StockData:
 
 # Function when accessing hovermode
 def onHome(request):
+	# Clearing active stocks on home
     active_stocks.clear()
-    # import plotly.offline as offline
-    # from selenium import webdriver
-    # for key in trending_stocks:
-    #     offline.plot(trending_stocks[key]['fig'], image = 'png', auto_open = False)
-    #     driver = webdriver.PhantomJS(executable_path="F:\\django project\\mysite\\static\\phantomjs-2.1.1-windows\\bin\\phantomjs.exe")
-    #     # driver.set_window_size(1000, 500)
-    #     driver.get('temp-plot.html')
-    #     driver.save_screenshot(f'{trending_stocks[key]}.png')
+
+    # Collecting all unreferenced objects, if any, using garbage collector
+    collect()
+
     return render(request, 'index.html')
+
+# Function when searching for stocks
+def onSubmit(request):
+    # Searched ticker
+    ticker = request.GET.get('text', 'default')
+
+    if not ticker:
+        return render(request, 'index.html')
+
+    # Adding to active stocks with figure
+    active_stocks[ticker] = StockData(ticker)
+    if active_stocks[ticker] is None:
+    	return HttpResponse('Invalid stock symbol entered!')
+    active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
+
+    plot(active_stocks['fig'], filename = 'static/single.html', auto_open = False)
+    # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
+    return render(request, 'Chart.html')    # Summary function in progress
 
 # Function when comparing stocks
 def onCompare(request):
     # Ticker to be compared to
-    ticker = request.GET.get('text', 'default')
-    if not ticker:
+    ticker = request.GET.get('text', None)
+    if ticker is None:
         return HttpResponse('Please enter valid stock ticker')
 
     # Adding to active stocks
     if ticker not in active_stocks:
         active_stocks[ticker] = StockData(ticker)
     else:
-        return render(request, 'Compare.html')
+        return render(request, 'Compare.html', {'tickers': active_stocks})
 
     # Determining best date range
     start = max(active_stocks[ticker].start_date for ticker in active_stocks if ticker != 'fig')
@@ -228,44 +256,26 @@ def onCompare(request):
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice(start = start, end = end,
                                                                   fig = active_stocks['fig'])
 
-    plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
-
-    return render(request, 'Compare.html')
-
-# Function when searching for stocks
-def onSubmit(request):
-    # Searched ticker
-    ticker = request.GET.get('text', 'default')
-    if not ticker:
-        return
-
-    # Adding to active stocks with figure
-    active_stocks[ticker] = StockData(ticker)
-    active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
-
-    plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
-    # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
-    return render(request, 'Chart.html')    # Summary function in progress
+    plot(active_stocks['fig'], filename = 'static/multiple.html', auto_open = False)
+    return render(request, 'Compare.html', {'tickers': active_stocks})
 
 # Function when clicking on trending stocks
-def onTrending(request):
-    # Get ticker from image
-    ticker = tuple(request.GET.keys())[0].split('.')[0]
+# def onTrending(request):
+#     # Get ticker from image
+#     ticker = tuple(request.GET.keys())[0].split('.')[0]
 
-    # Adding to active stocks with figure
-    active_stocks[ticker] = trending_stocks[ticker]['obj']
-    active_stocks['fig'] = trending_stocks[ticker]['fig']
-    plot(active_stocks['fig'], filename = 'templates/Page.html', auto_open = False)
-    # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
-    return render(request, 'static/Page.html')    # Summary function in progress
+#     # Adding to active stocks with figure
+#     active_stocks[ticker] = trending_stocks[ticker]['obj']
+#     active_stocks['fig'] = trending_stocks[ticker]['fig']
+#     plot(active_stocks['fig'], filename = 'templates/Page.html', auto_open = False)
+#     # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
+#     return render(request, 'static/Page.html')    # Summary function in progress
 
 # Function for Simple Moving Average Crossover Strategy
 def onSMA(request):
     # Slow (long) and fast (short) moving windows
     short_window = request.GET.get('short_window', 40)
     long_window = request.GET.get('long_window', 100)
-    print(short_window,long_window)
-    print(type(short_window), type(long_window))
     
     short_window, long_window = int(short_window), int(long_window)
     
@@ -276,7 +286,7 @@ def onSMA(request):
     for key in active_stocks:
         if key != 'fig':
             plot(active_stocks[key].SMA_CS(short_window = short_window, long_window = long_window),
-                filename = 'static/Page.html', auto_open = False)
+                filename = 'static/sma.html', auto_open = False)
             break
 
     return render(request, 'SMACS.html')
@@ -286,37 +296,46 @@ def onBacktest(request):
     initial_capital = request.GET.get('initial_capital', 1000000)
     shares = request.GET.get('shares', 100)
 
+    if not short_window or not long_window:
+        initial_capital = 1000000
+        shares = 100
+
     for key in active_stocks:
         if key != 'fig':
             plot(active_stocks[key].backtest(initial_capital = initial_capital, shares = shares),
-                filename = 'static/Page.html', auto_open = False)
+            	filename = 'static/back.html', auto_open = False)
             break
 
     return render(request, 'Backtest.html')
 
 # Function when removing SMA option
 def onRemoveSMA(request):
-    plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
+    # plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
     return render(request, 'Chart.html')
 
 # Function when removing comparison stock
 def onRemoveComparison(request):
     # Ticker to remove
-    ticker = None # Pass ticker of button to remove
+    ticker = ticker(request.GET.keys())[0]
 
     # Removing from active stocks and figure as well
-    active_stocks.pop(ticker)
-    active_stocks['fig'].data = tuple(filter(lambda stock: stock.name != ticker, active_stocks['fig'].data))
+    try:
+    	active_stocks.pop(ticker)
+    	collect()
+    	active_stocks['fig'].data = tuple(filter(lambda stock: stock.name != ticker, active_stocks['fig'].data))
 
-    plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
+    	# Plot new figure without removed comparison stock
+    	plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
+    except:
+    	return render(request, 'Compare.html', {'tickers': active_stocks})
 
-    return render(request, 'Compare.html') if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html')
+    return render(request, 'Compare.html', {'tickers': active_stocks}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html')
 
 # Currently active stocks and figure
 active_stocks = {}
-trending_stocks = {'GOOG': {'obj': StockData('GOOG')},
-                    'AAPL': {'obj': StockData('AAPL')},
-                    'AMZN': {'obj': StockData('AMZN')},
-                    'MSFT': {'obj': StockData('MSFT')}}
-for key in trending_stocks:
-    trending_stocks[key]['fig'] = trending_stocks[key]['obj'].plotClosingPrice()
+# trending_stocks = {'GOOG': {'obj': StockData('GOOG')},
+#                     'AAPL': {'obj': StockData('AAPL')},
+#                     'AMZN': {'obj': StockData('AMZN')},
+#                     'MSFT': {'obj': StockData('MSFT')}}
+# for key in trending_stocks:
+#     trending_stocks[key]['fig'] = trending_stocks[key]['obj'].plotClosingPrice()
