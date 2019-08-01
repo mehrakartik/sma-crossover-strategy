@@ -23,16 +23,24 @@ class StockData:
             file = StringIO()
             self.stock_df.to_csv(file)
             file.seek(0)
-            try:
-                temp = open('Datasets/' + self.ticker + '.csv')
-                temp.close()
-                from subprocess import run
-                run(f"del Datasets\\{self.ticker}.csv", shell = True)
-            except:
-                pass
-            finally:
-                default_storage.save('Datasets/' + self.ticker + '.csv', file)
+            if exists(f'Datasets/{self.ticker}.csv'):
+                remove(f'Datasets/{self.ticker}.csv')
+            default_storage.save(f'Datasets/{self.ticker}.csv', file)
             file.close()
+
+        #     file = StringIO()
+        #     self.stock_df.to_csv(file)
+        #     file.seek(0)
+        #     try:
+        #         temp = open('Datasets/' + self.ticker + '.csv')
+        #         temp.close()
+        #         from subprocess import run
+        #         run(f"del Datasets\\{self.ticker}.csv", shell = True)
+        #     except:
+        #         pass
+        #     finally:
+        #         default_storage.save('Datasets/' + self.ticker + '.csv', file)
+        #     file.close()
         except:
             self.stock_df = pd.read_csv('Datasets/' + self.ticker + '.csv', index_col = 'Date', parse_dates = True)
 
@@ -82,6 +90,7 @@ class StockData:
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
                            xaxis_rangeslider_visible = True)
+        fig.update_layout(title = None) if fig else None
 
         return go.Figure(data = data, layout = layout) if not fig else fig.add_trace(data)
 

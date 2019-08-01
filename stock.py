@@ -92,6 +92,7 @@ class StockData:
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
                            xaxis_rangeslider_visible = True)
+        fig.update_layout(title = None) if fig else None
 
         return go.Figure(data = data, layout = layout) if not fig else fig.add_trace(data)
 
