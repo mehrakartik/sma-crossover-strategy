@@ -40,29 +40,34 @@ class StockData:
             # default_storage.save(f'Datasets/{self.ticker}.csv', file)
             # file.close()
 
-        #     file = StringIO()
-        #     self.stock_df.to_csv(file)
-        #     file.seek(0)
-        #     try:
-        #         temp = open('Datasets/' + self.ticker + '.csv')
-        #         temp.close()
-        #         from subprocess import run
-        #         run(f"del Datasets\\{self.ticker}.csv", shell = True)
-        #     except:
-        #         pass
-        #     finally:
-        #         default_storage.save('Datasets/' + self.ticker + '.csv', file)
-        #     file.close()
+            # file = StringIO()
+            # self.stock_df.to_csv(file)
+            # file.seek(0)
+            # try:
+            #     temp = open('Datasets/' + self.ticker + '.csv')
+            #     temp.close()
+            #     from subprocess import run
+            #     run(f"del Datasets\\{self.ticker}.csv", shell = True)
+            # except:
+            #     pass
+            # finally:
+            #     default_storage.save('Datasets/' + self.ticker + '.csv', file)
+            # file.close()
 
         # Entered stock symbol is not in database
-    	except RemoteDataError:
-    		return None
+        except RemoteDataError:
+            return None
 
     	# When API fails
         else:
-        	try:
-            # self.stock_df = pd.read_csv('Datasets/' + self.ticker + '.csv', index_col = 'Date', parse_dates = True)
-            self.stock_df = pd.read_csv(join(getcwd(), 'Datasets', f'{self.ticker}.csv'), index_col = 'Date', parse_dates = True)
+            # Reading from saved file, if exists
+            try:
+       			# self.stock_df = pd.read_csv('Datasets/' + self.ticker + '.csv', index_col = 'Date', parse_dates = True)
+	            self.stock_df = pd.read_csv(join(getcwd(), 'Datasets', f'{self.ticker}.csv'), index_col = 'Date', parse_dates = True)
+
+            # If file is not found
+            except FileNotFoundError:
+                return f'API Error finding {self.ticker}'
 
         # Start and end date of the stock's data
         self._start_date = self.stock_df.index[0]
@@ -127,17 +132,13 @@ class StockData:
         short_window: Fast moving window
         long_window: Slow moving window
         '''
-        print(short_window, long_window)
+
         # Initialize signals DataFrame with Signal column having values 0
         self.signals = pd.DataFrame(data = 0, index = self.stock_df.index, columns = ['Signal'])
 
         # Create short and long moving averages columns
-        self.signals[f'Short ({short_window} days)'] = self.stock_df['Close'].rolling(window = short_window,
-                                                                                  min_periods = 1,
-                                                                                  center = False).mean()
-        self.signals[f'Long ({long_window} days)'] = self.stock_df['Close'].rolling(window = long_window,
-                                                                           min_periods = 1,
-                                                                           center = False).mean()
+        self.signals[f'Short ({short_window} days)'] = self.stock_df['Close'].rolling(window = short_window, min_periods = 1, center = False).mean()
+        self.signals[f'Long ({long_window} days)'] = self.stock_df['Close'].rolling(window = long_window, min_periods = 1, center = False).mean()
 
         # Create signals
         from numpy import where
@@ -164,22 +165,24 @@ class StockData:
                                  marker = {'symbol': 'triangle-down-dot', 'size': size, 'color': 'red'},
                                  mode = 'markers', showlegend = False, hoverinfo = 'skip')
 
-        # Plotting SMAs
+        # Figure layout
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
                            xaxis_rangeslider_visible = True)
+
+        # Return SMA-CS figure
         return go.Figure(data = [short_avg, long_avg, buy_signal, sell_signal], layout = layout)
 
     # Backtesting
     # Activate this function only after SMA_CS has been executed
     def backtest(self, initial_capital = 1000000, shares = 100):
         # Dataframe 'portfolio' to backtest SMA-CS
-        try:
-            self.portfolio = pd.DataFrame(index = self.signals.index)
-        except AttributeError:
-            print('First implement the crossover strategy')
-            return
+        self.portfolio = pd.DataFrame(index = self.signals.index)
+        # try:
+        #     self.portfolio = pd.DataFrame(index = self.signals.index)
+        # except AttributeError:
+        #     return HttpResponse('First implement the crossover strategy')
 
         # Buy 'shares' on the day when short moving average crosses long moving average
         self.portfolio[self.ticker] = shares * self.signals['Signal']
@@ -212,10 +215,14 @@ class StockData:
                                  y = self.portfolio[self.signals['Positions'] == -1]['Total'],
                                  marker = {'symbol': 'triangle-down-dot', 'size': size, 'color': 'red'},
                                  mode = 'markers', showlegend = False, hoverinfo = 'skip')
+
+        # Figure layout
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
                            xaxis_rangeslider_visible = True)
+
+        # Return backtest figure
         return go.Figure(data = [total, buy_signal, sell_signal], layout = layout)
 
 # Function when accessing hovermode
@@ -226,38 +233,72 @@ def onHome(request):
     # Collecting all unreferenced objects, if any, using garbage collector
     collect()
 
-    return render(request, 'index.html')
+    return render(request, 'index.html', {'alert': 'Congratulations! For being on the best stock site.'})
 
 # Function when searching for stocks
 def onSubmit(request):
     # Searched ticker
-    ticker = request.GET.get('text', 'default')
+    ticker = request.GET.get('text', None)
 
-    if not ticker:
-        return render(request, 'index.html')
+    # Auto submit without any input
+    if ticker is None:
+        return HttpResponse('ERROR!')
 
-    # Adding to active stocks with figure
+    # If nothing is passes as input
+    elif ticker == '':
+        return render(request, 'index.html', {'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'})
+
     active_stocks[ticker] = StockData(ticker)
+
+    # Enter stock symbol is not in database
     if active_stocks[ticker] is None:
-    	return HttpResponse('Invalid stock symbol entered!')
+    	return render(request, 'index.html', {'alert': f'{ticker} is not a vaild stock symbol! Please enter a vaild one.'})
+
+    # API error occurred and backup file is also not present
+    elif active_stocks[ticker] == f'API Error finding {ticker}':
+        return render(request, 'index.html', {'alert': active_stocks[ticker]})
+        # return HttpResponse(active_stocks[ticker])
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
 
     plot(active_stocks['fig'], filename = 'static/single.html', auto_open = False)
     # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
-    return render(request, 'Chart.html')    # Summary function in progress
+    return render(request, 'Chart.html', {'alert': ''})    # Summary function in progress
 
 # Function when comparing stocks
 def onCompare(request):
     # Ticker to be compared to
     ticker = request.GET.get('text', None)
+
+    # Auto submit without any input
     if ticker is None:
-        return HttpResponse('Please enter valid stock ticker')
+        return HttpResponse('ERROR!')
+
+    # If nothing is passed as input
+    elif ticker == '':
+        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'),
+            'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'}) if len(active_stocks) > 2 \
+            else render(request, 'Chart.html', {'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'})
 
     # Adding to active stocks
     if ticker not in active_stocks:
         active_stocks[ticker] = StockData(ticker)
+
+        # Enter stock symbol is not in database
+        if active_stocks[ticker] is None:
+            return render(request, 'Compare.html', {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
+                'alert': f'{ticker} is not a vaild stock symbol! Please enter a vaild one.'}) if len(active_stocks) > 2 \
+                else render(request, 'Chart.html', {'alert': f'{ticker} is not a vaild stock symbol! Please enter a vaild one.'})
+
+        # API error occurred and backup file is also not present
+        elif active_stocks[ticker] == f'API Error finding {ticker}':
+            return render(request, 'Compare.html', {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
+                'alert': active_stocks[ticker]}) if len(active_stocks) > 2 \
+                else render(request, 'Chart.html', {'alert': active_stocks[ticker]})
+    
+    # Stock symbol already in comparison
     else:
-        return render(request, 'Compare.html', {'tickers': active_stocks})
+        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'alert': ''}) \
+            if len(active_stocks) > 2 else render(request, 'Chart.html', {'alert': ''})
 
     # Determining best date range
     start = max(active_stocks[ticker].start_date for ticker in active_stocks if ticker != 'fig')
@@ -268,7 +309,7 @@ def onCompare(request):
                                                                   fig = active_stocks['fig'])
 
     plot(active_stocks['fig'], filename = 'static/multiple.html', auto_open = False)
-    return render(request, 'Compare.html', {'tickers': active_stocks})
+    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'alert': ''})
 
 # Function when clicking on trending stocks
 # def onTrending(request):
@@ -304,6 +345,7 @@ def onSMA(request):
 
 # Function on backtest
 def onBacktest(request):
+    # Taking initial capital and shares as input
     initial_capital = request.GET.get('initial_capital', 1000000)
     shares = request.GET.get('shares', 100)
 
@@ -322,7 +364,7 @@ def onBacktest(request):
 # Function when removing SMA option
 def onRemoveSMA(request):
     # plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
-    return render(request, 'Chart.html')
+    return render(request, 'Chart.html', {'alert': ''})
 
 # Function when removing comparison stock
 def onRemoveComparison(request):
@@ -340,7 +382,7 @@ def onRemoveComparison(request):
     except:
     	return render(request, 'Compare.html', {'tickers': active_stocks})
 
-    return render(request, 'Compare.html', {'tickers': active_stocks}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html')
+    return render(request, 'Compare.html', {'tickers': active_stocks, 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'alert': ''})
 
 # Currently active stocks and figure
 active_stocks = {}
