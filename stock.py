@@ -16,7 +16,7 @@ from plotly.offline import plot
 class StockData:
     def __init__(self, ticker):
         self._ticker = ticker.upper()
-        start = datetime(1950, 1, 1)
+        # start = datetime(1950, 1, 1)
         end = datetime.today()
 
         try:
@@ -29,7 +29,7 @@ class StockData:
             file.seek(0)
             if exists(join(getcwd(), 'Datasets', self.ticker, '.csv')):
             	remove(join(getcwd(), 'Datasets', self.ticker, '.csv'))
-            default_storage.save(join(getcwd(), 'Datasets', self.ticker, '.csv'), file)
+            default_storage.save(join(getcwd(), 'Datasets', f'{self.ticker}.csv'), file)
             file.close()
 
             # file = StringIO()
@@ -53,10 +53,16 @@ class StockData:
         #     finally:
         #         default_storage.save('Datasets/' + self.ticker + '.csv', file)
         #     file.close()
+
+        # Entered stock symbol is not in database
     	except RemoteDataError:
     		return None
+
+    	# When API fails
         else:
-            self.stock_df = pd.read_csv('Datasets/' + self.ticker + '.csv', index_col = 'Date', parse_dates = True)
+        	try:
+            # self.stock_df = pd.read_csv('Datasets/' + self.ticker + '.csv', index_col = 'Date', parse_dates = True)
+            self.stock_df = pd.read_csv(join(getcwd(), 'Datasets', f'{self.ticker}.csv'), index_col = 'Date', parse_dates = True)
 
         # Start and end date of the stock's data
         self._start_date = self.stock_df.index[0]
@@ -100,12 +106,17 @@ class StockData:
 
         # Data to plot
         data = go.Scatter(x = ranged_df.index, y = ranged_df['Close'], name = self.ticker)
+
+        # Figure layout
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
                            xaxis_rangeslider_visible = True)
+
+        # Remove title if comparing two stocks
         fig.update_layout(title = None) if fig else None
 
+        # Return new figure on new stock and updated figure on comparison
         return go.Figure(data = data, layout = layout) if not fig else fig.add_trace(data)
 
     # Simple Moving Average - Crossover Strategy
@@ -316,7 +327,7 @@ def onRemoveSMA(request):
 # Function when removing comparison stock
 def onRemoveComparison(request):
     # Ticker to remove
-    ticker = ticker(request.GET.keys())[0]
+    ticker = tuple(request.GET.keys())[0]
 
     # Removing from active stocks and figure as well
     try:
