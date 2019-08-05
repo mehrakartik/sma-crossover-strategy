@@ -463,7 +463,7 @@ def onRemoveComparison(request):
     except:
         return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert':''})
 
-    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig', 'original':tuple(active_stocks)[0], 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'alert': ''})
+    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'alert': ''})
 
 # Currently active stocks and figure
 active_stocks = {}
