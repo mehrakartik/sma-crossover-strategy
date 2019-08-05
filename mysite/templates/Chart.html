@@ -60,12 +60,6 @@
 <!-- the alert message -->
 
 
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Congratulations!</strong> To being on the best stock predictors.
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
 
 
     
@@ -108,7 +102,7 @@
 
 <!-- the chart div -->
 <div class="row">
-    <div class="container">
+    <div class="container-fluid">
       <ul class="nav nav-tabs">
         <!-- <li class="nav-item">
           <a class="nav-link " href="/compare">Compare</a>
@@ -122,8 +116,42 @@
                 </form>
               </div>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="/smacs">SMA (Crossover Strategy)</a>
+        </li> -->
+         <li class="nav-item">
+          <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
+          
+          <div class="btn-group drodown">
+            
+                  <a class="nav-link" href="/smacs">SMA (Crossover Strategy)</a>        
+                  
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+      <!-- Dropdown menu links -->
+
+                                                <div class="row" >
+                             <form action="/smacs" method="get">
+                              <div class="col">
+                              <input type="number" name="short_window" placeholder="Short Window">
+                            </div>
+                              
+                            <div class="col">
+                              <input type="number" name="long_window" placeholder="Long Window">
+                             </div>
+
+                             <div class="col">
+                              <input type="submit">
+                            </div>
+                          </form>
+
+                            
+                        </div>
+                    </div>
+              </div>
+            </form>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled">Backtest</a>
@@ -133,7 +161,7 @@
 
 
 
-    <iframe src='{% static "Page.html"%}' frameborder="0" scrolling="no" width="100%" height="600" align="right">
+    <iframe src='{% static "single.html"%}' frameborder="0" scrolling="no" width="100%" height="600" align="right">
     </iframe>
   </div> 
 </div>
@@ -149,6 +177,8 @@
 
 
   </div>
+  <br><br><br
+  
 
 
 

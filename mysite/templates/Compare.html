@@ -1,6 +1,8 @@
 
 <!doctype html>
 {% load staticfiles %}
+
+
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -15,7 +17,7 @@
 
     <title>Compare</title>
   </head>
-  <body background='{% static "backgroundg.jpg" %}'>
+  <body >
 
 <!-- the navigation bar section -->
 
@@ -78,6 +80,7 @@
 
 <br>
 <br> 
+<!-- <button>"hello"</button> -->
 
 
 
@@ -101,10 +104,33 @@
         </li>
       </ul>
 
+    <div class="row">
+
+      {%for i in tickers%}
+
+      {% if i == original %}
 
 
+      <div class="col-1">
+   
+      <pre style="height: 30px; width: 60px">{{i}}</pre>
 
-    <iframe src='{% static "Page.html"%}' frameborder="0" scrolling="no" width="100%" height="600" align="right">
+        </div>
+        {% else %}
+      
+      
+
+      <div class="col-1">
+    <form action="/remove" method="get">
+      <pre style="height: 30px; width: 60px">{{i}}<button name={{i}} type="submit" class="close" aria-label="Close"><span aria-hidden="false">&times;</span></button></pre>
+</form>
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+
+    <iframe src='{% static "multiple.html"%}' frameborder="0" scrolling="no" width="100%" height="600" align="right">
     </iframe>
   </div> 
 

@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('submit/', stock.onSubmit, name='submit'),
-    path('trending/', stock.onTrending, name='trending'),
+    path('remove/', stock.onRemoveComparison, name='remove'),
     path('compare/', stock.onCompare, name = 'compare'),
     path('smacs/', stock.onSMA, name = 'smacs'),
     path('home/', stock.onHome, name = 'home'),
