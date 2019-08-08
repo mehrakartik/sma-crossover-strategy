@@ -451,6 +451,7 @@ def onRemoveSMA(request):
 def onRemoveComparison(request):
     # Ticker to remove
     ticker = tuple(request.GET.keys())[0]
+    print(ticker)
 
     # Removing from active stocks and figure as well
     try:
@@ -459,9 +460,9 @@ def onRemoveComparison(request):
         active_stocks['fig'].data = tuple(filter(lambda stock: stock.name != ticker, active_stocks['fig'].data))
 
         # Plot new figure without removed comparison stock
-        plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
+        plot(active_stocks['fig'], filename = 'static/multiple.html', auto_open = False)
     except:
-        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert':''})
+        return render(request, 'Compare.html', {'tickers': active_stocks, 'original':tuple(active_stocks)[0], 'alert':''})
 
     return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'alert': ''})
 
