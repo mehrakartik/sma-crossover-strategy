@@ -117,6 +117,7 @@ class StockData:
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
                            xaxis_rangeslider_visible = True)
+        fig.update_layout(title = None) if fig else None
 
         # Remove title if comparing two stocks
         fig.update_layout(title = None) if fig else None
