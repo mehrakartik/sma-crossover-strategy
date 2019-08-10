@@ -1,8 +1,9 @@
 # Virtualenv
 smaenv
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# Datasets
+mysite/Datasets
+Datasets
 
 ### Django ###
 *.log
