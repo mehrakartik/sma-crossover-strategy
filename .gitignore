@@ -1,6 +1,9 @@
 # Virtualenv
 smaenv
 
+# Jupyter checkpoints
+.ipynb_checkpoints
+
 # Datasets
 mysite/Datasets
 Datasets
