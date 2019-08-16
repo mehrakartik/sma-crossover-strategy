@@ -9,7 +9,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %}">
     <title>Chart</title>
   </head>
   <body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
@@ -18,7 +18,7 @@
 <!-- the navigation bar section -->
 
 
-  	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -72,25 +72,26 @@
 <h1>{{summary.ticker}}:</h1>
   
   
-  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px">{{summary.latest_diff}}</h2>
-  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px">{{summary.latest_diff_pct}}&#37;</h2>
+  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;">{{summary.latest_diff}}</h2>
+  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;">{{summary.latest_diff_pct}}&#37;</h2>
 </div>
   <div style="display: flex;">
     <div>
-  <h2>Previous Close:{{summary.Previous_Close}}</h2>
-  <h2>Todays Open:{{summary.Todays_Open}}</h2>
-  <h2>All Time Maximum:{{summary.All_Time_Maximum}}</h2>
+  <h2>Previous Close: {{summary.Previous_Close}}</h2>
+  <h2>Todays Open: {{summary.Todays_Open}}</h2>
+  <h2>All Time Maximum: {{summary.All_Time_Maximum}}</h2>
 </div>
 <div style="margin-left: 50px">
-  <h2>All Time Minimum:{{summary.All_Time_Minimum}}</h2>
-  <h2>Todays Change:{{summary.Todays_Change}}</h2>
-  <h2>Monthly Change:{{summary.Monthly_Change}}</h2>
+  <h2>All Time Minimum: {{summary.All_Time_Minimum}}</h2>
+  <h2>Todays Change &#40;&#37;&#41;: {{summary.Todays_Change}}</h2>
+  <h2>Monthly Change &#40;&#37;&#41;: {{summary.Monthly_Change}}</h2>
 </div>
 </div>
 
 
 
 </div>
+
 
 <!-- the chart div -->
 <div class="row">

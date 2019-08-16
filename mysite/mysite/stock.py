@@ -243,16 +243,16 @@ class StockData:
         latest_diff = format(self.stock_df.iloc[-2:].diff()['Close'][1], '.2f')
         latest_diff_pct = format(self.stock_df.iloc[-2:].diff()['Close'][1] / self.stock_df.iloc[-2]['Close'] * 100, '.2f')
 
-        return {'ticker': self.ticker,
+         return {'ticker': self.ticker,
                 'latest_diff': latest_diff,
                 'latest_diff_pct': latest_diff_pct,
                 'color': 'green' if float(latest_diff) > 0 else 'red',
-                'Previous Close': previous_close,
-                "Today's Open": today_open,
-                'All Time Maximum': all_time_max,
-                'All Time Minimum': all_time_min,
-                "Today's Change (%)": today_pct_change,
-                'Monthly Change (%)': monthly_pct_change}
+                'Previous_Close': previous_close,
+                "Todays_Open": today_open,
+                'All_Time_Maximum': all_time_max,
+                'All_Time_Minimum': all_time_min,
+                "Todays_Change": today_pct_change,
+                'Monthly_Change': monthly_pct_change}
     
 
 # Function when accessing hovermode
