@@ -12,7 +12,9 @@
 
     <title>SMA (Crossover Strategy)</title>
   </head>
-  <body>
+  <body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
+ >
+
 
   	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/home">Stocks</a>
@@ -76,24 +78,6 @@
 
 <div class="container-fluid">
 
-<!-- 
-<div class="row" style="margin-top: 30px;">
-       <form action="/smacs" method="get">
-        <div class="col">
-        <input type="number" name="short_window" placeholder="Short Window">
-      </div>
-        
-      <div class="col">
-        <input type="number" name="long_window" placeholder="Long Window">
-       </div>
-
-       <div class="col">
-        <input type="submit">
-      </div>
-
-      </form>
-  </div>
- -->
 
 
   <div style="margin-top: 30px;">
@@ -102,9 +86,9 @@
           <a class="nav-link " href="/datasets">Compare</a>
         </li>
         
-        <li class="nav-item">
+        <li class="nav-item active">
           <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
-           <div class="btn-group drodown">
+           <div class="btn-group dropleft">
             
                   <a class="nav-link" href="/smacs">SMA (Crossover Strategy)</a>        
                   
@@ -114,10 +98,10 @@
                     <div class="dropdown-menu">
       <!-- Dropdown menu links -->
 
-                                                <div class="row" >
+                            <div class="row" >
                              <form action="/smacs" method="get">
                               <div class="col">
-                              <input type="number" name="short_window" placeholder="Short Window">
+                              <input type="number" name="short_window" placeholder="Short Window" style="background-color: grey;">
                             </div>
                               
                             <div class="col">

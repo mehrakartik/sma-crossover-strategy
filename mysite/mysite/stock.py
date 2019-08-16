@@ -61,6 +61,7 @@ class StockData:
         # Entered stock symbol is not in database
         except RemoteDataError:
             self.remote_data_error = True
+            return None
 
         # When API fails
         except ConnectionError:
@@ -72,13 +73,11 @@ class StockData:
             # If file is not found
             except FileNotFoundError:
                 self.api_error = True
+                return None
 
         # Start and end date of the stock's data
-        try:
-            self._start_date = self.stock_df.index[0]
-            self._end_date = self.stock_df.index[-1]
-        except:
-            pass
+        self._start_date = self.stock_df.index[0]
+        self._end_date = self.stock_df.index[-1]
 
     # Using property to get start date
     @property
@@ -289,9 +288,8 @@ def onSubmit(request):
     # When one stock is compared and back button is pressed
     active_stocks.clear()
     collect()
-    ticker=ticker.upper()
 
-
+    ticker = ticker.upper()
     active_stocks[ticker] = StockData(ticker)
     
     # Entered stock symbol is not in database
@@ -309,8 +307,8 @@ def onSubmit(request):
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
 
     plot(active_stocks['fig'], filename = 'static/single.html', auto_open = False)
-    # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
-    return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alert': {}})    # Summary function in progress
+
+    return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alerts': ''})
 
 @never_cache
 # Function when comparing stocks
@@ -331,24 +329,29 @@ def onCompare(request):
     elif ticker == '':
         return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0],
             'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'}) if len(active_stocks) > 2 \
-            else render(request, 'Chart.html', {'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'})
+            else render(request, 'Chart.html', {'alerts': {'1': 'You entered nothing!', '2': 'Please enter a valid stock symbol to visualize it.'}})
 
-    ticker=ticker.upper()
+    ticker = ticker.upper()
     # Adding to active stocks
     if ticker not in active_stocks:
         active_stocks[ticker] = StockData(ticker)
 
         # Enter stock symbol is not in database
-        if active_stocks[ticker] is None:
+        if active_stocks[ticker].remote_data_error:
+            active_stocks.pop(ticker)
+            collect()
             return render(request, 'Compare.html', {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
-                'alert': f'{ticker} is not a vaild stock symbol! Please enter a vaild one.'}) if len(active_stocks) > 2 \
-                else render(request, 'Chart.html', {'alert': f'{ticker} is not a vaild stock symbol! Please enter a vaild one.'})
+                'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}}) if len(active_stocks) > 2 \
+                else render(request, 'Chart.html', {'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}})
 
         # API error occurred and backup file is also not present
-        elif active_stocks[ticker] == f'API Error finding {ticker}':
+        elif active_stocks[ticker].api_error:
+            active_stocks.pop(ticker)
+            collect()
+
             return render(request, 'Compare.html', {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
                 'alert': active_stocks[ticker]}) if len(active_stocks) > 2 \
-                else render(request, 'Chart.html', {'alert': active_stocks[ticker]})
+                else render(request, 'Chart.html', {'alerts': {'1': 'ERROR!', '2': f"API couldn't find {ticker}"}})
     
     # Stock symbol already in comparison
     else:
@@ -378,8 +381,8 @@ def onCompare(request):
                 http_referer.pop(index)
                 break
 
-        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert': f'{ticker} is already in comparison.'}) \
-            if len(active_stocks) > 2 else render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alert': f"Can't compare {ticker} with itself!"})
+        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alerts':{"1":"Error!","2": f'{ticker} is already in comparison.'}}) \
+            if len(active_stocks) > 2 else render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alerts': {'1': 'ERROR!', '2': f"Can't compare {ticker} with itself."}})
 
     # Determining best date range
     start = max(active_stocks[ticker].start_date for ticker in active_stocks if ticker != 'fig')
@@ -390,19 +393,14 @@ def onCompare(request):
                                                                   fig = active_stocks['fig'])
 
     plot(active_stocks['fig'], filename = 'static/multiple.html', auto_open = False)
-    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert': ''})
+    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''})
 
 # Function when clicking on trending stocks
-# def onTrending(request):
-#     # Get ticker from image
-#     ticker = tuple(request.GET.keys())[0].split('.')[0]
+def onTrending(request):
+    # Get ticker from image
+    ticker = tuple(request.GET.keys())[0].split('.')[0]
 
-#     # Adding to active stocks with figure
-#     active_stocks[ticker] = trending_stocks[ticker]['obj']
-#     active_stocks['fig'] = trending_stocks[ticker]['fig']
-#     plot(active_stocks['fig'], filename = 'templates/Page.html', auto_open = False)
-#     # return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary()})
-#     return render(request, 'static/Page.html')    # Summary function in progress
+    return HttpResponseRedirect(f'/submit/?text={ticker}')
 
 # Function for Simple Moving Average Crossover Strategy
 def onSMA(request):
@@ -410,7 +408,11 @@ def onSMA(request):
     short_window = request.GET.get('short_window', 40)
     long_window = request.GET.get('long_window', 100)
     
-    short_window, long_window = int(short_window), int(long_window)
+    try:
+        short_window, long_window = int(short_window), int(long_window)
+    except ValueError:
+        short_window = 40
+        long_window =  100
     
     if not short_window or not long_window:
         short_window = 40
@@ -444,14 +446,12 @@ def onBacktest(request):
 
 # Function when removing SMA option
 def onRemoveSMA(request):
-    # plot(active_stocks['fig'], filename = 'static/Page.html', auto_open = False)
-    return render(request, 'Chart.html', {'alert': ''})
+    return render(request, 'Chart.html', {'alerts': {}})
 
 # Function when removing comparison stock
 def onRemoveComparison(request):
     # Ticker to remove
     ticker = tuple(request.GET.keys())[0]
-    print(ticker)
 
     # Removing from active stocks and figure as well
     try:
@@ -464,7 +464,7 @@ def onRemoveComparison(request):
     except:
         return render(request, 'Compare.html', {'tickers': active_stocks, 'original':tuple(active_stocks)[0], 'alert':''})
 
-    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'alert': ''})
+    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'summary': active_stocks[tuple(active_stocks)[0]].summary, 'alerts': {}})
 
 # Currently active stocks and figure
 active_stocks = {}

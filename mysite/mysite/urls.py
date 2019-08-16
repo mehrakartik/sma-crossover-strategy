@@ -20,15 +20,15 @@ from . import stock
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
+    path('', stock.onHome, name='home'),
     path('submit/', stock.onSubmit, name='submit'),
     path('remove/', stock.onRemoveComparison, name='remove'),
     path('compare/', stock.onCompare, name = 'compare'),
     path('smacs/', stock.onSMA, name = 'smacs'),
     path('home/', stock.onHome, name = 'home'),
-    path('backtest/', stock.onBacktest, name = 'backtest')
+    path('backtest/', stock.onBacktest, name = 'backtest'),
     # path('aboutus/',views.fun),
-    # path('getnum/',views.getNums,name='getnums'),
+    path('trending/',stock.onTrending,name='onTrending'),
     # path('getData/',views.getData,name='getData'),
     # path('getimage/',views.getimage,name='getimage'),
 

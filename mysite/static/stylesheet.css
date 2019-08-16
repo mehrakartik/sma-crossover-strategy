@@ -1,4 +1,6 @@
 
+
+  
     
 
     .searchbar{
@@ -44,4 +46,11 @@
     color:red;
     background: black;
     
+    }
+
+    .ticker_name:hover {
+       
+        /*color:#273429;*/
+        color: white
+        
     }

@@ -12,13 +12,14 @@
 
     <title>Chart</title>
   </head>
-  <body background='{% static "bg3l.jpg" %}'>
+  <body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
+ >
 
 <!-- the navigation bar section -->
 
 
   	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/home data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
+  <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -54,39 +55,46 @@
 
 </nav>
 
+<!-- Alerts while comparing -->
+{% if alerts %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert" >
+    <strong>{{alerts.1}}</strong> {{alerts.2}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{% endif %}
 
-  <div>
     
 
-    <<!-- div style="float: left;"> -->
-      <!-- {{summary}} -->
-      
-     
-      <div class="col">
-         <h1>summary</h1>
-      <p >
-        What is Lorem Ipsum?
-        Lorem Ipsum is simply dummy text of the printing
-        \n and typesetting industry.\n Lorem Ipsum has been the industry's 
-        standard dummy text ever since the 1500s, when an unknown \nprinter took 
-        a galley of type and scrambled it to make a type specimen book. \nIt has
-         survived not only five centuries, but also the leap into electronic 
-         typesetting,\n remaining essentially unchanged. It was popularised 
-         in \n the 1960s with the release of Letraset sheets\n containing Lorem 
-         Ipsum passages, and more recently with desktop publishing software 
-         like Aldus PageMaker including versions of Lorem Ipsum.
+<div style="margin-left: 50px">
+  <div style="display: flex;">
+<h1>{{summary.ticker}}:</h1>
+  
+  
+  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px">{{summary.latest_diff}}</h2>
+  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px">{{summary.latest_diff_pct}}&#37;</h2>
+</div>
+  <div style="display: flex;">
+    <div>
+  <h2>Previous Close:{{summary.Previous_Close}}</h2>
+  <h2>Todays Open:{{summary.Todays_Open}}</h2>
+  <h2>All Time Maximum:{{summary.All_Time_Maximum}}</h2>
+</div>
+<div style="margin-left: 50px">
+  <h2>All Time Minimum:{{summary.All_Time_Minimum}}</h2>
+  <h2>Todays Change:{{summary.Todays_Change}}</h2>
+  <h2>Monthly Change:{{summary.Monthly_Change}}</h2>
+</div>
+</div>
 
 
-      </p>
-      
 
-
-    </div>
-
+</div>
 
 <!-- the chart div -->
 <div class="row">
-    <div class="container-fluid">
+    <div class="container">
       <ul class="nav nav-tabs">
         <!-- <li class="nav-item">
           <a class="nav-link " href="/compare">Compare</a>
@@ -108,26 +116,27 @@
           
           <div class="btn-group drodown">
             
-                  <a class="nav-link" href="/smacs" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days">SMA (Crossover Strategy)</a>        
+                  <a class="nav-link text-danger" href="/smacs" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days">SMA (Crossover Strategy)</a>        
                   
-                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!">
                       <span class="sr-only">Toggle Dropdown</span>
                     </button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu dropdown-menu-right">
       <!-- Dropdown menu links -->
 
-                                                <div class="row" >
+                                                <div class="row" style="background-color:grey" >
                              <form action="/smacs" method="get">
                               <div class="col">
-                              <input type="number" name="short_window" placeholder="Short Window">
+                              <input type="number" name="short_window" placeholder="Short Window" style="margin-left: 15px;margin-right: 15px">
                             </div>
-                              
+                              <br>
                             <div class="col">
-                              <input type="number" name="long_window" placeholder="Long Window">
+                              <input type="number" name="long_window" placeholder="Long Window"  style="margin-left: 15px;margin-right: 15px">
                              </div>
+                             <br>
 
-                             <div class="col">
-                              <input type="submit">
+                             <div class="col" >
+                              <input type="submit"style="margin-left: 70px;margin-right: 70px">
                             </div>
                           </form>
 
@@ -144,10 +153,10 @@
         </li>
       </ul>
 
-
-
-
-    <iframe src='{% static "single.html"%}' frameborder="0" scrolling="no" width="100%" height="600" align="right">
+<br><br>
+</div>
+<div class="container">
+    <iframe src='{% static "single.html"%}' frameborder="0" scrolling="no" width="100%" height="600" align="right" style="background: 'https://www.pexels.com/photo/953214/download/?search_query=gradient%2520website%2520background&tracking_id=vu6avlvu9sc';border-spacing: 0px">
     </iframe>
   </div> 
 </div>
@@ -163,7 +172,7 @@
 
 
   </div>
-  <br><br><br
+  <br><br><br>
   
 
 
