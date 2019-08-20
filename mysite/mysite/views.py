@@ -1,23 +1,23 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+# from django.http import HttpResponse
+# from django.shortcuts import render
+# # import pandas as pd
+# import numpy as np
 # import pandas as pd
-import numpy as np
-import pandas as pd
-import matplotlib as pl
-import matplotlib.pyplot as plt
-pl.use('Agg')
-import io
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-
+# import matplotlib as pl
 # import matplotlib.pyplot as plt
-# import seaborn as sns
-import pandas_datareader as pdr
-import quandl
-from datetime import datetime
-from django.http import HttpResponse
-from matplotlib import pylab
-from pylab import *
-from . import stock
+# pl.use('Agg')
+# import io
+# from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+
+# # import matplotlib.pyplot as plt
+# # import seaborn as sns
+# import pandas_datareader as pdr
+# import quandl
+# from datetime import datetime
+# from django.http import HttpResponse
+# from matplotlib import pylab
+# from pylab import *
+# from . import stock
 
 
 
@@ -27,8 +27,8 @@ from . import stock
 
 
 
-def index(request):
-    return render(request,'index.html')
+# def index(request):
+#     return render(request,'index.html')
 
 
 
