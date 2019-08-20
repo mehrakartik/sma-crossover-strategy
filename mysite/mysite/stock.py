@@ -122,7 +122,10 @@ class StockData:
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
-                           xaxis_rangeslider_visible = True)
+                           xaxis_rangeslider_visible = True,
+                           paper_bgcolor='rgba(0,0,0,0)',
+                           plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18
+                            ))
 
         # Remove title if comparing two stocks
         fig.update_layout(title = None, xaxis_range = (start, end)) if fig else None
@@ -175,7 +178,10 @@ class StockData:
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
-                           xaxis_rangeslider_visible = True)
+                           xaxis_rangeslider_visible = True,
+                           paper_bgcolor='rgba(0,0,0,0)',
+                           plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18
+                            ))
 
         # Return SMA-CS figure
         return go.Figure(data = [short_avg, long_avg, buy_signal, sell_signal], layout = layout)
@@ -226,7 +232,10 @@ class StockData:
         layout = go.Layout(xaxis = {'title': 'Date'},
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
-                           xaxis_rangeslider_visible = True)
+                           xaxis_rangeslider_visible = True,showlegend=False,
+                           paper_bgcolor='rgba(0,0,0,0)',
+                           plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18
+                            ))
 
         # Return backtest figure
         return go.Figure(data = [total, buy_signal, sell_signal], layout = layout)
@@ -243,7 +252,7 @@ class StockData:
         latest_diff = format(self.stock_df.iloc[-2:].diff()['Close'][1], '.2f')
         latest_diff_pct = format(self.stock_df.iloc[-2:].diff()['Close'][1] / self.stock_df.iloc[-2]['Close'] * 100, '.2f')
 
-         return {'ticker': self.ticker,
+        return {'ticker': self.ticker,
                 'latest_diff': latest_diff,
                 'latest_diff_pct': latest_diff_pct,
                 'color': 'green' if float(latest_diff) > 0 else 'red',
@@ -462,7 +471,7 @@ def onRemoveComparison(request):
         # Plot new figure without removed comparison stock
         plot(active_stocks['fig'], filename = 'static/multiple.html', auto_open = False)
     except:
-        return render(request, 'Compare.html', {'tickers': active_stocks, 'original':tuple(active_stocks)[0], 'alert':''})
+        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert':''})
 
     return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'summary': active_stocks[tuple(active_stocks)[0]].summary, 'alerts': {}})
 
