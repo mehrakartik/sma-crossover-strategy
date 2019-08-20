@@ -123,12 +123,11 @@ class StockData:
                            yaxis = {'title': 'Price in $'},
                            hovermode = 'x', title = self.ticker,
                            xaxis_rangeslider_visible = True,
-                           paper_bgcolor='rgba(0,0,0,0)',
-                           plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18
-                            ))
+                           paper_bgcolor='rgba(0, 0, 0, 0)',
+                           plot_bgcolor='rgba(0, 0, 0, 0.5)',font=dict(color='white', size=18))
 
         # Remove title if comparing two stocks
-        fig.update_layout(title = None, xaxis_range = (start, end)) if fig else None
+        fig.update_layout(title=None, xaxis_range=(start, end), legend={'bgcolor':'rgba(0, 0, 0, 0.5)', 'font': {'color': 'white'}}) if fig else None
 
         # Return new figure on new stock and updated figure on comparison
         return go.Figure(data = data, layout = layout) if not fig else fig.add_trace(data)
@@ -180,8 +179,7 @@ class StockData:
                            hovermode = 'x', title = self.ticker,
                            xaxis_rangeslider_visible = True,
                            paper_bgcolor='rgba(0,0,0,0)',
-                           plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18
-                            ))
+                           plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18))
 
         # Return SMA-CS figure
         return go.Figure(data = [short_avg, long_avg, buy_signal, sell_signal], layout = layout)
