@@ -25,7 +25,7 @@ class StockData:
 
         try:
             # Reading data from pandas datareader
-            self.stock_df = get_data_yahoo(self.ticker,  end = end)
+            self.stock_df = get_data_yahoo(self.ticker, end=end)
 
             # Writing the data into a CSV, in case API read fails
             file = StringIO()
@@ -35,28 +35,6 @@ class StockData:
                 remove(join(getcwd(), 'Datasets', f'{self.ticker}.csv'))
             default_storage.save(join(getcwd(), 'Datasets', f'{self.ticker}.csv'), file)
             file.close()
-
-            # file = StringIO()
-            # self.stock_df.to_csv(file)
-            # file.seek(0)
-            # if exists(f'Datasets/{self.ticker}.csv'):
-            #     remove(f'Datasets/{self.ticker}.csv')
-            # default_storage.save(f'Datasets/{self.ticker}.csv', file)
-            # file.close()
-
-            # file = StringIO()
-            # self.stock_df.to_csv(file)
-            # file.seek(0)
-            # try:
-            #     temp = open('Datasets/' + self.ticker + '.csv')
-            #     temp.close()
-            #     from subprocess import run
-            #     run(f"del Datasets\\{self.ticker}.csv", shell = True)
-            # except:
-            #     pass
-            # finally:
-            #     default_storage.save('Datasets/' + self.ticker + '.csv', file)
-            # file.close()
 
         # Entered stock symbol is not in database
         except RemoteDataError:
@@ -68,7 +46,7 @@ class StockData:
             # Reading from saved file, if exists
             try:
                 # self.stock_df = pd.read_csv('Datasets/' + self.ticker + '.csv', index_col = 'Date', parse_dates = True)
-                self.stock_df = pd.read_csv(join(getcwd(), 'Datasets', f'{self.ticker}.csv'), index_col = 'Date', parse_dates = True)
+                self.stock_df = pd.read_csv(join(getcwd(), 'Datasets', f'{self.ticker}.csv'), index_col='Date', parse_dates=True)
 
             # If file is not found
             except FileNotFoundError:
@@ -95,7 +73,7 @@ class StockData:
         return self._ticker
 
     # Return data in date range
-    def getDataInRange(self, start = None, end = None):
+    def getDataInRange(self, start=None, end=None):
         # Handling start date
         if not start:
             start = self.start_date
@@ -111,29 +89,29 @@ class StockData:
         return self.stock_df.loc[start:end].copy()
 
     # Plotting closing prices
-    def plotClosingPrice(self, start = None, end = None, fig = None):
+    def plotClosingPrice(self, start=None, end=None, fig=None):
         # Ranging DataFrame
         ranged_df = self.getDataInRange(start, end)
 
         # Data to plot
-        data = go.Scatter(x = ranged_df.index, y = ranged_df['Close'], name = self.ticker)
+        data = go.Scatter(x=ranged_df.index, y=ranged_df['Close'], name=self.ticker)
 
         # Figure layout
-        layout = go.Layout(xaxis = {'title': 'Date'},
-                           yaxis = {'title': 'Price in $'},
-                           hovermode = 'x', title = self.ticker,
-                           xaxis_rangeslider_visible = True,
+        layout = go.Layout(xaxis={'title': 'Date'},
+                           yaxis={'title': 'Price in $'},
+                           hovermode='x', title=self.ticker,
+                           xaxis_rangeslider_visible=True,
                            paper_bgcolor='rgba(0, 0, 0, 0)',
                            plot_bgcolor='rgba(0, 0, 0, 0.5)',font=dict(color='white', size=18))
 
         # Remove title if comparing two stocks
-        fig.update_layout(title=None, xaxis_range=(start, end), legend={'bgcolor':'rgba(0, 0, 0, 0.5)', 'font': {'color': 'white'}}) if fig else None
+        fig.update_layout(title=None, xaxis_range=(start, end), legend={'bgcolor': 'rgba(0, 0, 0, 0.5)', 'font': {'color': 'white'}}) if fig else None
 
         # Return new figure on new stock and updated figure on comparison
-        return go.Figure(data = data, layout = layout) if not fig else fig.add_trace(data)
+        return go.Figure(data=data, layout=layout) if not fig else fig.add_trace(data)
 
     # Simple Moving Average - Crossover Strategy
-    def SMA_CS(self, short_window = 40, long_window = 100):
+    def SMA_CS(self, short_window=40, long_window=100):
         '''
         Parameters
         ----------
@@ -142,11 +120,11 @@ class StockData:
         '''
 
         # Initialize signals DataFrame with Signal column having values 0
-        self.signals = pd.DataFrame(data = 0, index = self.stock_df.index, columns = ['Signal'])
+        self.signals = pd.DataFrame(data=0, index=self.stock_df.index, columns=['Signal'])
 
         # Create short and long moving averages columns
-        self.signals[f'Short ({short_window} days)'] = self.stock_df['Close'].rolling(window = short_window, min_periods = 1, center = False).mean()
-        self.signals[f'Long ({long_window} days)'] = self.stock_df['Close'].rolling(window = long_window, min_periods = 1, center = False).mean()
+        self.signals[f'Short ({short_window} days)'] = self.stock_df['Close'].rolling(window=short_window, min_periods=1, center=False).mean()
+        self.signals[f'Long ({long_window} days)'] = self.stock_df['Close'].rolling(window=long_window, min_periods=1, center=False).mean()
 
         # Create signals
         from numpy import where
@@ -157,42 +135,38 @@ class StockData:
         self.signals['Positions'] = self.signals['Signal'].diff()
 
         # Short and long moving averages
-        short_avg = go.Scatter(x = self.signals.index, y = self.signals[f'Short ({short_window} days)'],
-                                 name = f'Short ({short_window} days)')
-        long_avg = go.Scatter(x = self.signals.index, y = self.signals[f'Long ({long_window} days)'],
-                              name = f'Long ({long_window} days)')
+        short_avg = go.Scatter(x=self.signals.index, y=self.signals[f'Short ({short_window} days)'],
+                                 name=f'Short ({short_window} days)')
+        long_avg = go.Scatter(x=self.signals.index, y=self.signals[f'Long ({long_window} days)'],
+                              name=f'Long ({long_window} days)')
 
         # Buy and sell signals
         size = 10
-        buy_signal = go.Scatter(x = self.signals[self.signals['Positions'] == 1].index,
-                                y = self.signals[self.signals['Positions'] == 1][f'Short ({short_window} days)'],
-                                marker = {'symbol': 'triangle-up-dot', 'size': size, 'color': 'green'},
-                                mode = 'markers', showlegend = False, hoverinfo = 'skip')
-        sell_signal = go.Scatter(x = self.signals[self.signals['Positions'] == -1].index,
-                                 y = self.signals[self.signals['Positions'] == -1][f'Short ({short_window} days)'],
-                                 marker = {'symbol': 'triangle-down-dot', 'size': size, 'color': 'red'},
-                                 mode = 'markers', showlegend = False, hoverinfo = 'skip')
+        buy_signal = go.Scatter(x=self.signals[self.signals['Positions'] == 1].index,
+                                y=self.signals[self.signals['Positions'] == 1][f'Short ({short_window} days)'],
+                                marker={'symbol': 'triangle-up-dot', 'size': size, 'color': 'green'},
+                                mode='markers', showlegend=False, hoverinfo='skip')
+        sell_signal = go.Scatter(x=self.signals[self.signals['Positions'] == -1].index,
+                                 y=self.signals[self.signals['Positions'] == -1][f'Short ({short_window} days)'],
+                                 marker={'symbol': 'triangle-down-dot', 'size': size, 'color': 'red'},
+                                 mode='markers', showlegend=False, hoverinfo='skip')
 
         # Figure layout
-        layout = go.Layout(xaxis = {'title': 'Date'},
-                           yaxis = {'title': 'Price in $'},
-                           hovermode = 'x', title = self.ticker,
-                           xaxis_rangeslider_visible = True,
+        layout = go.Layout(xaxis={'title': 'Date'},
+                           yaxis={'title': 'Price in $'},
+                           hovermode='x', title=self.ticker,
+                           xaxis_rangeslider_visible=True,
                            paper_bgcolor='rgba(0,0,0,0)',
                            plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18))
 
         # Return SMA-CS figure
-        return go.Figure(data = [short_avg, long_avg, buy_signal, sell_signal], layout = layout)
+        return go.Figure(data=[short_avg, long_avg, buy_signal, sell_signal], layout=layout)
 
     # Backtesting
     # Activate this function only after SMA_CS has been executed
-    def backtest(self, initial_capital = 1000000, shares = 100):
+    def backtest(self, initial_capital=1000000, shares=100):
         # Dataframe 'portfolio' to backtest SMA-CS
-        self.portfolio = pd.DataFrame(index = self.signals.index)
-        # try:
-        #     self.portfolio = pd.DataFrame(index = self.signals.index)
-        # except AttributeError:
-        #     return HttpResponse('First implement the crossover strategy')
+        self.portfolio = pd.DataFrame(index=self.signals.index)
 
         # Buy 'shares' on the day when short moving average crosses long moving average
         self.portfolio[self.ticker] = shares * self.signals['Signal']
@@ -201,7 +175,7 @@ class StockData:
         self.portfolio['Diff'] = self.portfolio[self.ticker].diff()
 
         # Holdings of the shares
-        self.portfolio['Holdings'] = self.portfolio[self.ticker].multiply(self.stock_df['Adj Close'], axis = 0)
+        self.portfolio['Holdings'] = self.portfolio[self.ticker].multiply(self.stock_df['Adj Close'], axis=0)
 
         # Cash in hand
         self.portfolio['Cash'] = initial_capital - self.portfolio['Diff'].multiply(self.stock_df['Adj Close']).cumsum()
@@ -213,30 +187,30 @@ class StockData:
         self.portfolio['Returns'] = self.portfolio['Total'].pct_change()
 
         # Plot total
-        total = go.Scatter(x = self.portfolio.index, y = self.portfolio['Total'], name = 'Total')
+        total = go.Scatter(x=self.portfolio.index, y=self.portfolio['Total'], name='Total')
 
         # Buy and sell signals
         size = 10
-        buy_signal = go.Scatter(x = self.portfolio[self.signals['Positions'] == 1].index,
-                                y = self.portfolio[self.signals['Positions'] == 1]['Total'],
-                                marker = {'symbol': 'triangle-up-dot', 'size': size, 'color': 'green'},
-                                mode = 'markers', showlegend = False, hoverinfo = 'skip')
-        sell_signal = go.Scatter(x = self.portfolio[self.signals['Positions'] == -1].index,
-                                 y = self.portfolio[self.signals['Positions'] == -1]['Total'],
-                                 marker = {'symbol': 'triangle-down-dot', 'size': size, 'color': 'red'},
-                                 mode = 'markers', showlegend = False, hoverinfo = 'skip')
+        buy_signal = go.Scatter(x=self.portfolio[self.signals['Positions'] == 1].index,
+                                y=self.portfolio[self.signals['Positions'] == 1]['Total'],
+                                marker={'symbol': 'triangle-up-dot', 'size': size, 'color': 'green'},
+                                mode='markers', showlegend=False, hoverinfo='skip')
+        sell_signal = go.Scatter(x=self.portfolio[self.signals['Positions'] == -1].index,
+                                 y=self.portfolio[self.signals['Positions'] == -1]['Total'],
+                                 marker={'symbol': 'triangle-down-dot', 'size': size, 'color': 'red'},
+                                 mode='markers', showlegend=False, hoverinfo='skip')
 
         # Figure layout
-        layout = go.Layout(xaxis = {'title': 'Date'},
-                           yaxis = {'title': 'Price in $'},
-                           hovermode = 'x', title = self.ticker,
-                           xaxis_rangeslider_visible = True,showlegend=False,
+        layout = go.Layout(xaxis={'title': 'Date'},
+                           yaxis={'title': 'Price in $'},
+                           hovermode='x', title=self.ticker,
+                           xaxis_rangeslider_visible=True,showlegend=False,
                            paper_bgcolor='rgba(0,0,0,0)',
                            plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18
                             ))
 
         # Return backtest figure
-        return go.Figure(data = [total, buy_signal, sell_signal], layout = layout)
+        return go.Figure(data=[total, buy_signal, sell_signal], layout=layout)
 
     # Summary of the stock
     @property
@@ -313,7 +287,7 @@ def onSubmit(request):
         # return HttpResponse(active_stocks[ticker])
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
 
-    plot(active_stocks['fig'], filename = 'static/single.html', auto_open = False)
+    plot(active_stocks['fig'], filename='static/single.html', auto_open=False)
 
     return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alerts': ''})
 
@@ -371,11 +345,7 @@ def onCompare(request):
         try:
             if http_referer[-1] == http_referer[-3]:
                 http_referer = http_referer[:0]
-                # extra_tickers = tuple(active_stocks)[2:]
                 org_ticker = tuple(active_stocks)[0]
-                # for ticker in extra_tickers:
-                #     active_stocks.pop(ticker)
-                # active_stocks['fig'].data = tuple(filter(lambda stock: stock.name == org_ticker, active_stocks['fig'].data))
                 return HttpResponseRedirect(f'/submit/?text={org_ticker}')
         # Clicking back twice (GOOG is compared with GOOG -> ERROR)
         except IndexError:
@@ -394,12 +364,12 @@ def onCompare(request):
     # Determining best date range
     start = max(active_stocks[ticker].start_date for ticker in active_stocks if ticker != 'fig')
     end = min(active_stocks[ticker].end_date for ticker in active_stocks if ticker != 'fig')
-    # print(start, end)
+    
     # Adding ticker trace to current figure
-    active_stocks['fig'] = active_stocks[ticker].plotClosingPrice(start = start, end = end,
-                                                                  fig = active_stocks['fig'])
+    active_stocks['fig'] = active_stocks[ticker].plotClosingPrice(start=start, end=end,
+                                                                  fig=active_stocks['fig'])
 
-    plot(active_stocks['fig'], filename = 'static/multiple.html', auto_open = False)
+    plot(active_stocks['fig'], filename='static/multiple.html', auto_open=False)
     return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''})
 
 # Function when clicking on trending stocks
@@ -427,8 +397,8 @@ def onSMA(request):
 
     for key in active_stocks:
         if key != 'fig':
-            plot(active_stocks[key].SMA_CS(short_window = short_window, long_window = long_window),
-                filename = 'static/sma.html', auto_open = False)
+            plot(active_stocks[key].SMA_CS(short_window=short_window, long_window=long_window),
+                filename='static/sma.html', auto_open=False)
             break
 
     return render(request, 'SMACS.html')
@@ -445,8 +415,8 @@ def onBacktest(request):
 
     for key in active_stocks:
         if key != 'fig':
-            plot(active_stocks[key].backtest(initial_capital = initial_capital, shares = shares),
-                filename = 'static/back.html', auto_open = False)
+            plot(active_stocks[key].backtest(initial_capital=initial_capital, shares=shares),
+                filename='static/back.html', auto_open=False)
             break
 
     return render(request, 'Backtest.html')
@@ -467,7 +437,7 @@ def onRemoveComparison(request):
         active_stocks['fig'].data = tuple(filter(lambda stock: stock.name != ticker, active_stocks['fig'].data))
 
         # Plot new figure without removed comparison stock
-        plot(active_stocks['fig'], filename = 'static/multiple.html', auto_open = False)
+        plot(active_stocks['fig'], filename='static/multiple.html', auto_open=False)
     except:
         return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert':''})
 
