@@ -102,15 +102,14 @@
   
     
  
-    <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
-    <input type="text" name="text" class="form-control"  placeholder="Compare..." style="height: 40px;border-color:white;background-color: #CCC7C7;text-shadow:11;">
+    
+    <input type="text" name="text" class="form-control"  placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;color:white;border-color:#2a2d31;background-color: #2a2d31; text-shadow:11; ">
   
   
 </form>
         </li>
         
         <li class="nav-item ">
-          <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
            <div class="btn-group drodown">
             
                   <a class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;">SMA (Crossover Strategy)</a>        
@@ -118,26 +117,28 @@
                     <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="border:none;margin-bottom: 2px;">
                       <span class="sr-only" >Toggle Dropdown</span>
                     </button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu" style="background:transparent;border:none;">
+
       <!-- Dropdown menu links -->
 
-                            <div class="row" >
-                             <form action="/smacs" method="get">
-                              <div class="col">
-                              <input type="number" name="short_window" placeholder="Short Window" style="background-color: grey;">
-                            </div>
-                              
-                            <div class="col">
-                              <input type="number" name="long_window" placeholder="Long Window">
-                             </div>
+                      <div class="row" >
+                       <form action="/smacs" method="get">
+                        <div class="col">
+                        <input type="text" name="text" class="form-control"  placeholder="Short window" style="height: 30px; width:180px;text-shadow:11;">
+                      </div>
+                        
+                      <div class="col">
+                        <input type="text" name="text" class="form-control"  placeholder="Long window" style="height: 30px; width:180px;text-shadow:11;">
+                       </div>
 
-                             <div class="col">
-                              <input type="submit">
-                            </div>
-                          </form>
+                       <div class="col">
+                        <!-- <input type="submit" style=" border-radius: 10%"> -->
+                      <button type="submit"  class=" btn btn-dark btn-sm" >submit</button>
+                      </div>
+                      </form>
 
                             
-                        </div>
+                      </div>
                     </div>
               </div>
             </form>
@@ -156,38 +157,16 @@
   </div> 
 </div>
 
-  <!-- </div> -->
-      
 
-
-
-
-
-
-
-
+    
   </div>
   <br><br><br>
   
-
-
-
-
-
-
-
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-
-
-
-
-
-
 
 
   </body>
