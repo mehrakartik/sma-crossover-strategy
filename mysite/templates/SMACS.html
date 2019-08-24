@@ -79,21 +79,28 @@
 <div class="container-fluid">
 
 
-
-  <div style="margin-top: 30px;">
-      <ul class="nav nav-tabs">
+<div style="margin-top: 30px;" class="container">
+      <ul class="nav nav-tabs" >
         <li class="nav-item">
-          <a class="nav-link text-success" href="/datasets" style="background-color: #33637B;">Compare</a>
+         <form class="form-inline" action="/compare" method="get">
+  
+    
+ 
+    <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+    <input type="text" name="text" class="form-control"  placeholder="Compare..." style="height: 40px;border-color:white;background-color: white;text-shadow:11;">
+  
+  
+</form>
         </li>
         
-        <li class="nav-item active">
+        <li class="nav-item ">
           <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
            <div class="btn-group drodown">
             
-                  <a class="nav-link text-warning" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" href="/smacs" style="background-color: #33637B;">SMA (Crossover Strategy)</a>        
+                  <a class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;">SMA (Crossover Strategy)</a>        
                   
-                    <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="background-color: #33637B;">
-                      <span class="sr-only">Toggle Dropdown</span>
+                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="border:none;margin-bottom: 2px;">
+                      <span class="sr-only" >Toggle Dropdown</span>
                     </button>
                     <div class="dropdown-menu">
       <!-- Dropdown menu links -->
@@ -120,7 +127,7 @@
             </form>
         </li>
         <li class="nav-item">
-        <a class="nav-link text-danger" href="/backtest">Backtest</a>
+        <a class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px;" data-toggle="tooltip" data-placement="top" title="You can backtest here the sma Strategy!">Backtest</a>
 
         </li>
       </ul>
