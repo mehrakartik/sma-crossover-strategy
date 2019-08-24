@@ -80,25 +80,38 @@
 
 
     <div class="container-fluid">
-      <ul class="nav nav-tabs">
-        <li class="nav-item active">
-          <div class="col-12 col-md-10 col-lg-8">
-                <form action="/compare" method="get">
+      
+      <div style="margin-top: 30px;" class="container">
+      <ul class="nav nav-tabs" >
+        <li class="nav-item">
+         <form class="form-inline" action="/compare" method="get">
+  
     
-                  <input type="text" name="text"  placeholder="Compare..."  style="color:#100404; margin-top:10px; margin-left: 10px; margin-right:10px" >
-                 
+ 
+    <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+    <input type="text" name="text" class="form-control"  placeholder="Compare..." style="height: 40px;border-color:white;background-color: white;text-shadow:11;">
+  
+  
+</form>
+        </li>
+        
+        <li class="nav-item ">
+          <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
+           
+            <div>
+                  <button class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="You cannot do SMA analysis while comparing!" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;" disabled="true">SMA (Crossover Strategy)</button>        
+                  </div>            
+                       
+                    
+        </li>
+        <li class="nav-item n">
+        <button class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px;" disabled="true" data-toggle="tooltip" data-placement="top" title="Please first do the SMA!" >Backtest</button>
 
-                </form>
-              </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">SMA (Crossover Strategy)</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled">Backtest</a>
         </li>
       </ul>
 
+    </div>
+</div>
 
 <div class="container" style="height: 40px;margin-top: 50px">
     <div class="row " >
