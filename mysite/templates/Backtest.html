@@ -9,35 +9,27 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %">
 
-    <title>Home</title>
+    <title>Backtest</title>
   </head>
   <body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
  >
 
-  	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/home">Stocks</a>
+  	
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/home" data-toggle="tooltip" data-placement="top" title="You will go directly to the home">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/textgrab">About us</a>
+        <a class="nav-link" href="/aboutus" data-toggle="tooltip" data-placement="top" title="All information about the creaters is here!">About us</a>
       </li>
-      
-      
-
-
-
-
-
-
-      
-
 
     </ul>
 
@@ -47,12 +39,13 @@
   </div>
 
   <div>
-  	  <!-- <form class="form-inline" action="/textgrab" method="get">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form> -->
+ 
 
-  	
+  
+  <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
+    <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
+  </a> 
+    
 
 
 
@@ -60,27 +53,68 @@
 
 
 </nav>
+<br><br>
 
 
 
-<div class="container">
-      <ul class="nav nav-tabs">
+  <div style="margin-top: 30px;" class="container">
+      <ul class="nav nav-tabs" >
         <li class="nav-item">
-          <a class="nav-link " href="/datasets">Compare</a>
+         <form class="form-inline" action="/compare" method="get">
+  
+    
+ 
+    <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+    <input type="text" name="text" class="form-control"  placeholder="Compare..." style="height: 40px;border-color:white;background-color: white;text-shadow:11;">
+  
+  
+</form>
         </li>
         
-        <li class="nav-item">
-          <a class="nav-link" href="/smacs">SMA (Crossover Strategy)</a>
+        <li class="nav-item ">
+          <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
+           <div class="btn-group drodown">
+            
+                  <a class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;">SMA (Crossover Strategy)</a>        
+                  
+                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="border:none;margin-bottom: 2px;">
+                      <span class="sr-only" >Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+      <!-- Dropdown menu links -->
+
+                            <div class="row" >
+                             <form action="/smacs" method="get">
+                              <div class="col">
+                              <input type="number" name="short_window" placeholder="Short Window" style="background-color: grey;">
+                            </div>
+                              
+                            <div class="col">
+                              <input type="number" name="long_window" placeholder="Long Window">
+                             </div>
+
+                             <div class="col">
+                              <input type="submit">
+                            </div>
+                          </form>
+
+                            
+                        </div>
+                    </div>
+              </div>
+            </form>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/backtest">Backtest</a>
+        <a class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px; " data-toggle="tooltip" data-placement="top" title="You are doing backtesting already!">Backtest</a>
+
         </li>
       </ul>
 
+    </div>
+</div>
 
-
-
-    <iframe src='{%static "back.html"%}' frameborder="0" scrolling="no" width="100%" height="700" align="right" >
+<div class="container-fluid">
+    <iframe src='{%static "back.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right" >
     </iframe>
   </div> 
 
