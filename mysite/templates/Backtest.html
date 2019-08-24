@@ -65,7 +65,7 @@
     
  
     <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
-    <input type="text" name="text" class="form-control"  placeholder="Compare..." style="height: 40px;border-color:white;background-color: white;text-shadow:11;">
+    <input type="text" name="text" class="form-control"  placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;border-color:white;background-color: white;text-shadow:11;">
   
   
 </form>
@@ -80,21 +80,22 @@
                     <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="border:none;margin-bottom: 2px;">
                       <span class="sr-only" >Toggle Dropdown</span>
                     </button>
-                    <div class="dropdown-menu">
+                    <div class="dropdown-menu" style="background:transparent;border:none;">
       <!-- Dropdown menu links -->
 
                             <div class="row" >
                              <form action="/smacs" method="get">
                               <div class="col">
-                              <input type="number" name="short_window" placeholder="Short Window" style="background-color: grey;">
+                              <input type="text" name="text" class="form-control"  placeholder="Short window" style="height: 30px; width:180px;text-shadow:11;">
                             </div>
                               
                             <div class="col">
-                              <input type="number" name="long_window" placeholder="Long Window">
+                              <input type="text" name="text" class="form-control"  placeholder="Long window" style="height: 30px; width:180px;text-shadow:11;">
                              </div>
 
                              <div class="col">
-                              <input type="submit">
+                              <!-- <input type="submit" style=" border-radius: 10%"> -->
+                            <button type="submit"  class=" btn btn-dark btn-sm"  style="margin-left: 65px;margin-right: 65px;">submit</button>
                             </div>
                           </form>
 
