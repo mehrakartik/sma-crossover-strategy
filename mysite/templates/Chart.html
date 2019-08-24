@@ -72,8 +72,8 @@
 <h1>{{summary.ticker}}:</h1>
   
   
-  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;">{{summary.latest_diff}}</h2>
-  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;">({{summary.latest_diff_pct}}&#37;)</h2>
+  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;" data-toggle="tooltip" data-placement="top" title="latest_diff">{{summary.latest_diff}}</h2>
+  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;" data-toggle="tooltip" data-placement="top" title="latest_diff_pct">({{summary.latest_diff_pct}}&#37;)</h2>
 </div>
 <br>
   <div style="display: flex;">
@@ -95,51 +95,44 @@
 
 <br><br><br>
 
-<!-- the chart div -->
-<div class="row">
-    <div class="container">
-      <ul class="nav nav-tabs">
-        <!-- <li class="nav-item">
-          <a class="nav-link " href="/compare">Compare</a>
-        </li> -->
+<div style="margin-top: 30px;" class="container">
+      <ul class="nav nav-tabs" >
         <li class="nav-item">
-          <div class="col-12 col-md-10 col-lg-8">
-                <form action="/compare" method="get">
+         <form class="form-inline" action="/compare" method="get">
+  
     
-                  <input type="text" name="text"  placeholder="Compare..."  style="color:#100404; margin-top:10px; margin-left: 10px; margin-right:10px" >
-
-                </form>
-              </div>
+ 
+    <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+    <input type="text" name="text" class="form-control"  placeholder="Compare..." style="height: 40px;border-color:white;background-color: #CCC7C7;text-shadow:11;">
+  
+  
+</form>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="/smacs">SMA (Crossover Strategy)</a>
-        </li> -->
-         <li class="nav-item">
+        
+        <li class="nav-item ">
           <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
-          
-          <div class="btn-group drodown">
+           <div class="btn-group drodown">
             
-                  <a class="nav-link text-danger" href="/smacs" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" style="color: #41a551;">SMA (Crossover Strategy)</a>        
+                  <a class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;">SMA (Crossover Strategy)</a>        
                   
-                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!">
-                      <span class="sr-only">Toggle Dropdown</span>
+                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="border:none;margin-bottom: 2px;">
+                      <span class="sr-only" >Toggle Dropdown</span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-menu">
       <!-- Dropdown menu links -->
 
-                                                <div class="row" style="background-color:grey" >
+                            <div class="row" >
                              <form action="/smacs" method="get">
                               <div class="col">
-                              <input type="number" name="short_window" placeholder="Short Window" style="margin-left: 15px;margin-right: 15px">
+                              <input type="number" name="short_window" placeholder="Short Window" style="background-color: grey;">
                             </div>
-                              <br>
+                              
                             <div class="col">
-                              <input type="number" name="long_window" placeholder="Long Window"  style="margin-left: 15px;margin-right: 15px">
+                              <input type="number" name="long_window" placeholder="Long Window">
                              </div>
-                             <br>
 
-                             <div class="col" >
-                              <input type="submit"style="margin-left: 70px;margin-right: 70px">
+                             <div class="col">
+                              <input type="submit">
                             </div>
                           </form>
 
@@ -149,14 +142,13 @@
               </div>
             </form>
         </li>
-        <li class="nav-item">
-          <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="First do the SMA analysis">
-  <button class="btn " style="pointer-events: none;" type="button" disabled>Backtest</button>
-</span>
+        <li class="nav-item n">
+        <button class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px;" disabled="true" data-toggle="tooltip" data-placement="top" title="Please first do the SMA!" >Backtest</button>
+
         </li>
       </ul>
 
-
+    </div>
 </div>
 <div class="container-fluid">
     <iframe src='{% static "single.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right" style="background: 'https://www.pexels.com/photo/953214/download/?search_query=gradient%2520website%2520background&tracking_id=vu6avlvu9sc';border-spacing: 0px">
