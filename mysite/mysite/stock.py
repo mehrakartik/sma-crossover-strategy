@@ -233,8 +233,7 @@ class StockData:
                 'All_Time_Maximum': all_time_max,
                 'All_Time_Minimum': all_time_min,
                 "Todays_Change": today_pct_change,
-                'Monthly_Change': monthly_pct_change}
-    
+                'Monthly_Change': monthly_pct_change} 
 
 # Function when accessing hovermode
 def onHome(request):
@@ -250,8 +249,6 @@ def onHome(request):
 @never_cache
 # Function when searching for stocks
 def onSubmit(request):
-    global http_referer
-
     # Searched ticker
     ticker = request.GET.get('text', None)
 
@@ -336,6 +333,7 @@ def onCompare(request):
     
     # Stock symbol already in comparison
     else:
+        print('here')
         # Detect whether refresh has happened or not
         if http_referer[-1] == http_referer[-2]:
             http_referer.pop()
@@ -344,22 +342,22 @@ def onCompare(request):
         # Detect whether back click has happened or not
         try:
             if http_referer[-1] == http_referer[-3]:
-                http_referer = http_referer[:0]
-                org_ticker = tuple(active_stocks)[0]
-                return HttpResponseRedirect(f'/submit/?text={org_ticker}')
+                http_referer = http_referer[:1]
+                return HttpResponseRedirect(f'/submit/?text={tuple(active_stocks)[0]}')
         # Clicking back twice (GOOG is compared with GOOG -> ERROR)
         except IndexError:
             if len(active_stocks) > 2:
                 return HttpResponseRedirect('/home/')
 
-        # Removing first occurrence of ticker to get back  clickfunctionality done properly
+        # Removing first occurrence of ticker to get back click functionality done properly
         for index, ref in enumerate(http_referer):
             if ref[1] == ticker:
                 http_referer.pop(index)
                 break
-
-        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alerts':{"1":"Error!","2": f'{ticker} is already in comparison.'}}) \
+        print('here')
+        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alerts': {"1":"Error!","2": f'{ticker} is already in comparison.'}}) \
             if len(active_stocks) > 2 else render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alerts': {'1': 'ERROR!', '2': f"Can't compare {ticker} with itself."}})
+        print('here')
 
     # Determining best date range
     start = max(active_stocks[ticker].start_date for ticker in active_stocks if ticker != 'fig')
@@ -380,11 +378,11 @@ def onTrending(request):
     return HttpResponseRedirect(f'/submit/?text={ticker}')
 
 # Function for Simple Moving Average Crossover Strategy
-def onSMA(request):
+def onSMA(request):    
     # Slow (long) and fast (short) moving windows
     short_window = request.GET.get('short_window', 40)
     long_window = request.GET.get('long_window', 100)
-    
+
     try:
         short_window, long_window = int(short_window), int(long_window)
     except ValueError:
@@ -421,14 +419,13 @@ def onBacktest(request):
 
     return render(request, 'Backtest.html')
 
-# Function when removing SMA option
-def onRemoveSMA(request):
-    return render(request, 'Chart.html', {'alerts': {}})
-
 # Function when removing comparison stock
 def onRemoveComparison(request):
     # Ticker to remove
     ticker = tuple(request.GET.keys())[0]
+
+    # HTTP reference of the page
+    http_referer.append((request.META['HTTP_REFERER'], ticker))
 
     # Removing from active stocks and figure as well
     try:
