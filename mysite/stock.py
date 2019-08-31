@@ -339,9 +339,10 @@ def onCompare(request):
                       {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'),
                        'original': tuple(active_stocks)[0],
                        'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'}) \
-            if len(active_stocks) > 2 else render(request, 'Chart.html',
-                                                  {'alerts': {'1': 'You entered nothing!',
-                                                              '2': 'Please enter a valid stock symbol to visualize it.'}})
+            if len(active_stocks) > 2 \
+            else render(request, 'Chart.html',
+                        {'alerts': {'1': 'You entered nothing!',
+                                    '2': 'Please enter a valid stock symbol to visualize it.'}})
 
     ticker = ticker.upper()
     # Adding to active stocks
