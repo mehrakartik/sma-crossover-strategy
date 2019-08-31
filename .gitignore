@@ -1,8 +1,8 @@
 # Virtualenv
 smaenv
 
-# Jupyter notebook (temporary)
-*.py
+# Temporary file
+Practice.py
 
 # Jupyter checkpoints
 .ipynb_checkpoints
