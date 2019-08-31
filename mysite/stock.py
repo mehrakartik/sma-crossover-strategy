@@ -34,7 +34,8 @@ class StockData:
             file.seek(0)
             if exists(join(getcwd(), 'Datasets', f'{self.ticker}.csv')):
                 remove(join(getcwd(), 'Datasets', f'{self.ticker}.csv'))
-            default_storage.save(join(getcwd(), 'Datasets', f'{self.ticker}.csv'), file)
+            default_storage.save(join(getcwd(), 'Datasets',
+                                      f'{self.ticker}.csv'), file)
             file.close()
 
         # Entered stock symbol is not in database
@@ -46,8 +47,9 @@ class StockData:
         except ConnectionError:
             # Reading from saved file, if exists
             try:
-                # self.stock_df = pd.read_csv('Datasets/' + self.ticker + '.csv', index_col = 'Date', parse_dates = True)
-                self.stock_df = pd.read_csv(join(getcwd(), 'Datasets', f'{self.ticker}.csv'), index_col='Date', parse_dates=True)
+                self.stock_df = pd.read_csv(join(getcwd(), 'Datasets',
+                                                 f'{self.ticker}.csv'),
+                                            index_col='Date', parse_dates=True)
 
             # If file is not found
             except FileNotFoundError:
@@ -95,7 +97,8 @@ class StockData:
         ranged_df = self.getDataInRange(start, end)
 
         # Data to plot
-        data = go.Scatter(x=ranged_df.index, y=ranged_df['Close'], name=self.ticker)
+        data = go.Scatter(x=ranged_df.index,
+                          y=ranged_df['Close'], name=self.ticker)
 
         # Figure layout
         layout = go.Layout(xaxis={'title': 'Date'},
@@ -103,13 +106,17 @@ class StockData:
                            hovermode='x', title=self.ticker,
                            xaxis_rangeslider_visible=True,
                            paper_bgcolor='rgba(0, 0, 0, 0)',
-                           plot_bgcolor='rgba(0, 0, 0, 0.5)', font=dict(color='white', size=18))
+                           plot_bgcolor='rgba(0, 0, 0, 0.5)',
+                           font=dict(color='white', size=18))
 
         # Remove title if comparing two stocks
-        fig.update_layout(title=None, xaxis_range=(start, end), legend={'bgcolor': 'rgba(0, 0, 0, 0.5)', 'font': {'color': 'white'}}) if fig else None
+        fig.update_layout(title=None, xaxis_range=(start, end),
+                          legend={'bgcolor': 'rgba(0, 0, 0, 0.5)',
+                                  'font': {'color': 'white'}}) if fig else None
 
         # Return new figure on new stock and updated figure on comparison
-        return go.Figure(data=data, layout=layout) if not fig else fig.add_trace(data)
+        return go.Figure(data=data, layout=layout) \
+            if not fig else fig.add_trace(data)
 
     # Simple Moving Average - Crossover Strategy
     def SMA_CS(self, short_window=40, long_window=100):
@@ -121,7 +128,8 @@ class StockData:
         '''
 
         # Initialize signals DataFrame with Signal column having values 0
-        self.signals = pd.DataFrame(data=0, index=self.stock_df.index, columns=['Signal'])
+        self.signals = pd.DataFrame(data=0, index=self.stock_df.index,
+                                    columns=['Signal'])
 
         # Create short and long moving averages columns
         self.signals[f'Short ({short_window} days)'] = self.stock_df['Close'].rolling(window=short_window, min_periods=1, center=False).mean()
@@ -146,11 +154,14 @@ class StockData:
         buy_signal = go.Scatter(x=self.signals[self.signals['Positions'] == 1].index,
                                 y=self.signals[self.signals['Positions'] == 1][f'Short ({short_window} days)'],
                                 marker={'symbol': 'triangle-up-dot', 'size': size, 'color': 'green'},
-                                mode='markers', showlegend=False, hoverinfo='skip')
+                                mode='markers', showlegend=False,
+                                hoverinfo='skip')
         sell_signal = go.Scatter(x=self.signals[self.signals['Positions'] == -1].index,
                                  y=self.signals[self.signals['Positions'] == -1][f'Short ({short_window} days)'],
-                                 marker={'symbol': 'triangle-down-dot', 'size': size, 'color': 'red'},
-                                 mode='markers', showlegend=False, hoverinfo='skip')
+                                 marker={'symbol': 'triangle-down-dot',
+                                         'size': size, 'color': 'red'},
+                                 mode='markers', showlegend=False,
+                                 hoverinfo='skip')
 
         # Figure layout
         layout = go.Layout(xaxis={'title': 'Date'},
@@ -158,10 +169,12 @@ class StockData:
                            hovermode='x', title=self.ticker,
                            xaxis_rangeslider_visible=True,
                            paper_bgcolor='rgba(0,0,0,0)',
-                           plot_bgcolor='rgba(0,0,0,0.5)', font=dict(color='white', size=18))
+                           plot_bgcolor='rgba(0,0,0,0.5)',
+                           font=dict(color='white', size=18))
 
         # Return SMA-CS figure
-        return go.Figure(data=[short_avg, long_avg, buy_signal, sell_signal], layout=layout)
+        return go.Figure(data=[short_avg, long_avg, buy_signal, sell_signal],
+                         layout=layout)
 
     # Backtesting
     # Activate this function only after SMA_CS has been executed
@@ -194,12 +207,16 @@ class StockData:
         size = 10
         buy_signal = go.Scatter(x=self.portfolio[self.signals['Positions'] == 1].index,
                                 y=self.portfolio[self.signals['Positions'] == 1]['Total'],
-                                marker={'symbol': 'triangle-up-dot', 'size': size, 'color': 'green'},
-                                mode='markers', showlegend=False, hoverinfo='skip')
+                                marker={'symbol': 'triangle-up-dot',
+                                        'size': size, 'color': 'green'},
+                                mode='markers', showlegend=False,
+                                hoverinfo='skip')
         sell_signal = go.Scatter(x=self.portfolio[self.signals['Positions'] == -1].index,
                                  y=self.portfolio[self.signals['Positions'] == -1]['Total'],
-                                 marker={'symbol': 'triangle-down-dot', 'size': size, 'color': 'red'},
-                                 mode='markers', showlegend=False, hoverinfo='skip')
+                                 marker={'symbol': 'triangle-down-dot',
+                                         'size': size, 'color': 'red'},
+                                 mode='markers', showlegend=False,
+                                 hoverinfo='skip')
 
         # Figure layout
         layout = go.Layout(xaxis={'title': 'Date'},
@@ -207,7 +224,8 @@ class StockData:
                            hovermode='x', title=self.ticker,
                            xaxis_rangeslider_visible=True, showlegend=False,
                            paper_bgcolor='rgba(0,0,0,0)',
-                           plot_bgcolor='rgba(0,0,0,0.5)', font=dict(color='white', size=18))
+                           plot_bgcolor='rgba(0,0,0,0.5)',
+                           font=dict(color='white', size=18))
 
         # Return backtest figure
         return go.Figure(data=[total, buy_signal, sell_signal], layout=layout)
@@ -245,7 +263,9 @@ def onHome(request):
     # Collecting all unreferenced objects, if any, using garbage collector
     collect()
 
-    return render(request, 'index.html', {'alerts': {'1': 'Congratulations!', '2': 'For being on the best stock site.'}})
+    return render(request, 'index.html',
+                  {'alerts': {'1': 'Congratulations!',
+                              '2': 'For being on the best stock site.'}})
 
 
 @never_cache
@@ -263,7 +283,9 @@ def onSubmit(request):
 
     # If nothing is passes as input
     elif ticker == '':
-        return render(request, 'index.html', {'alerts': {'1': 'You entered nothing!', '2': 'Please enter a valid stock symbol to visualize it.'}})
+        return render(request, 'index.html',
+                      {'alerts': {'1': 'You entered nothing!',
+                                  '2': 'Please enter a valid stock symbol to visualize it.'}})
 
     # When one stock is compared and back button is pressed
     active_stocks.clear()
@@ -276,19 +298,24 @@ def onSubmit(request):
     if active_stocks[ticker].remote_data_error:
         active_stocks.clear()
         collect()
-        return render(request, 'index.html', {'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}})
+        return render(request, 'index.html',
+                      {'alerts': {'1': f'{ticker} is not a vaild stock symbol!',
+                                  '2': 'Please enter a vaild one.'}})
 
     # API error occurred and backup file is also not present
     elif active_stocks[ticker].api_error:
         active_stocks.clear()
         collect()
-        return render(request, 'index.html', {'alerts': {'1': 'Error!', '2': f"API couldn't find {ticker}"}})
-        # return HttpResponse(active_stocks[ticker])
+        return render(request, 'index.html',
+                      {'alerts': {'1': 'Error!',
+                                  '2': f"API couldn't find {ticker}"}})
+
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice()
 
     plot(active_stocks['fig'], filename='static/single.html', auto_open=False)
 
-    return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alerts': ''})
+    return render(request, 'Chart.html',
+                  {'summary': active_stocks[ticker].summary, 'alerts': ''})
 
 
 @never_cache
@@ -308,9 +335,13 @@ def onCompare(request):
 
     # If nothing is passed as input
     elif ticker == '':
-        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0],
-                      'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'}) if len(active_stocks) > 2 \
-            else render(request, 'Chart.html', {'alerts': {'1': 'You entered nothing!', '2': 'Please enter a valid stock symbol to visualize it.'}})
+        return render(request, 'Compare.html',
+                      {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'),
+                       'original': tuple(active_stocks)[0],
+                       'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'}) \
+            if len(active_stocks) > 2 else render(request, 'Chart.html',
+                                                  {'alerts': {'1': 'You entered nothing!',
+                                                              '2': 'Please enter a valid stock symbol to visualize it.'}})
 
     ticker = ticker.upper()
     # Adding to active stocks
@@ -321,18 +352,27 @@ def onCompare(request):
         if active_stocks[ticker].remote_data_error:
             active_stocks.pop(ticker)
             collect()
-            return render(request, 'Compare.html', {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
-                                                    'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}}) if len(active_stocks) > 2 \
-                else render(request, 'Chart.html', {'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}})
+            return render(request, 'Compare.html',
+                          {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
+                           'alerts': {'1': f'{ticker} is not a vaild stock symbol!',
+                                      '2': 'Please enter a vaild one.'}}) \
+                if len(active_stocks) > 2 \
+                else render(request, 'Chart.html',
+                            {'alerts': {'1': f'{ticker} is not a vaild stock symbol!',
+                                        '2': 'Please enter a vaild one.'}})
 
         # API error occurred and backup file is also not present
         elif active_stocks[ticker].api_error:
             active_stocks.pop(ticker)
             collect()
 
-            return render(request, 'Compare.html', {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
-                                                    'alert': active_stocks[ticker]}) if len(active_stocks) > 2 \
-                else render(request, 'Chart.html', {'alerts': {'1': 'ERROR!', '2': f"API couldn't find {ticker}"}})
+            return render(request, 'Compare.html',
+                          {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
+                           'alert': active_stocks[ticker]}) \
+                if len(active_stocks) > 2 \
+                else render(request, 'Chart.html',
+                            {'alerts': {'1': 'ERROR!',
+                                        '2': f"API couldn't find {ticker}"}})
 
     # Stock symbol already in comparison
     else:
@@ -340,7 +380,9 @@ def onCompare(request):
         # Detect whether refresh has happened or not
         if http_referer[-1] == http_referer[-2]:
             http_referer.pop()
-            return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''})
+            return render(request, 'Compare.html',
+                          {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'),
+                           'original': tuple(active_stocks)[0], 'alert': ''})
 
         # Detect whether back click has happened or not
         try:
@@ -358,9 +400,15 @@ def onCompare(request):
                 http_referer.pop(index)
                 break
         print('here')
-        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alerts': {"1": "Error!", "2": f'{ticker} is already in comparison.'}}) \
-            if len(active_stocks) > 2 else render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alerts': {'1': 'ERROR!', '2': f"Can't compare {ticker} with itself."}})
-        print('here')
+        return render(request, 'Compare.html',
+                      {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'),
+                       'original': tuple(active_stocks)[0],
+                       'alerts': {"1": "Error!", "2": f'{ticker} is already in comparison.'}}) \
+            if len(active_stocks) > 2 \
+            else render(request, 'Chart.html',
+                        {'summary': active_stocks[ticker].summary,
+                         'alerts': {'1': 'ERROR!',
+                                    '2': f"Can't compare {ticker} with itself."}})
 
     # Determining best date range
     start = max(active_stocks[ticker].start_date for ticker in active_stocks if ticker != 'fig')
@@ -370,8 +418,11 @@ def onCompare(request):
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice(start=start, end=end,
                                                                   fig=active_stocks['fig'])
 
-    plot(active_stocks['fig'], filename='static/multiple.html', auto_open=False)
-    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''})
+    plot(active_stocks['fig'], filename='static/multiple.html',
+         auto_open=False)
+    return render(request, 'Compare.html',
+                  {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'),
+                   'original': tuple(active_stocks)[0], 'alert': ''})
 
 
 # Function when clicking on trending stocks
@@ -400,7 +451,8 @@ def onSMA(request):
 
     for key in active_stocks:
         if key != 'fig':
-            plot(active_stocks[key].SMA_CS(short_window=short_window, long_window=long_window),
+            plot(active_stocks[key].SMA_CS(short_window=short_window,
+                                           long_window=long_window),
                  filename='static/sma.html', auto_open=False)
             break
 
@@ -419,7 +471,8 @@ def onBacktest(request):
 
     for key in active_stocks:
         if key != 'fig':
-            plot(active_stocks[key].backtest(initial_capital=initial_capital, shares=shares),
+            plot(active_stocks[key].backtest(initial_capital=initial_capital,
+                                             shares=shares),
                  filename='static/back.html', auto_open=False)
             break
 
@@ -438,14 +491,23 @@ def onRemoveComparison(request):
     try:
         active_stocks.pop(ticker)
         collect()
-        active_stocks['fig'].data = tuple(filter(lambda stock: stock.name != ticker, active_stocks['fig'].data))
+        active_stocks['fig'].data = tuple(filter(lambda stock: stock.name != ticker,
+                                                 active_stocks['fig'].data))
 
         # Plot new figure without removed comparison stock
         plot(active_stocks['fig'], filename='static/multiple.html', auto_open=False)
     except:
-        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''})
+        return render(request, 'Compare.html',
+                      {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'),
+                       'original': tuple(active_stocks)[0], 'alert': ''})
 
-    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'summary': active_stocks[tuple(active_stocks)[0]].summary, 'alerts': {}})
+    return render(request, 'Compare.html',
+                  {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'),
+                   'original': tuple(active_stocks)[0], 'alert': ''}) \
+        if len(active_stocks['fig'].data) > 1 \
+        else render(request, 'Chart.html',
+                    {'summary': active_stocks[tuple(active_stocks)[0]].summary,
+                     'alerts': {}})
 
 # Currently active stocks and figure
 active_stocks = {}
