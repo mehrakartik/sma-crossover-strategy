@@ -4,6 +4,9 @@ smaenv
 # Jupyter checkpoints
 .ipynb_checkpoints
 
+# Static files
+static
+
 # Datasets
 mysite/Datasets
 Datasets
