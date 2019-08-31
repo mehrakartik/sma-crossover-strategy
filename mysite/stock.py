@@ -15,6 +15,7 @@ from datetime import datetime
 import plotly.graph_objs as go
 from plotly.offline import plot
 
+
 class StockData:
     def __init__(self, ticker):
         self.remote_data_error = False
@@ -102,7 +103,7 @@ class StockData:
                            hovermode='x', title=self.ticker,
                            xaxis_rangeslider_visible=True,
                            paper_bgcolor='rgba(0, 0, 0, 0)',
-                           plot_bgcolor='rgba(0, 0, 0, 0.5)',font=dict(color='white', size=18))
+                           plot_bgcolor='rgba(0, 0, 0, 0.5)', font=dict(color='white', size=18))
 
         # Remove title if comparing two stocks
         fig.update_layout(title=None, xaxis_range=(start, end), legend={'bgcolor': 'rgba(0, 0, 0, 0.5)', 'font': {'color': 'white'}}) if fig else None
@@ -129,14 +130,14 @@ class StockData:
         # Create signals
         from numpy import where
         self.signals['Signal'][short_window:] = where(self.signals[f'Short ({short_window} days)'][short_window:] >
-                                                 self.signals[f'Long ({long_window} days)'][short_window:], 1, 0)
+                                                      self.signals[f'Long ({long_window} days)'][short_window:], 1, 0)
 
         # Trading orders
         self.signals['Positions'] = self.signals['Signal'].diff()
 
         # Short and long moving averages
         short_avg = go.Scatter(x=self.signals.index, y=self.signals[f'Short ({short_window} days)'],
-                                 name=f'Short ({short_window} days)')
+                               name=f'Short ({short_window} days)')
         long_avg = go.Scatter(x=self.signals.index, y=self.signals[f'Long ({long_window} days)'],
                               name=f'Long ({long_window} days)')
 
@@ -157,7 +158,7 @@ class StockData:
                            hovermode='x', title=self.ticker,
                            xaxis_rangeslider_visible=True,
                            paper_bgcolor='rgba(0,0,0,0)',
-                           plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18))
+                           plot_bgcolor='rgba(0,0,0,0.5)', font=dict(color='white', size=18))
 
         # Return SMA-CS figure
         return go.Figure(data=[short_avg, long_avg, buy_signal, sell_signal], layout=layout)
@@ -204,10 +205,9 @@ class StockData:
         layout = go.Layout(xaxis={'title': 'Date'},
                            yaxis={'title': 'Price in $'},
                            hovermode='x', title=self.ticker,
-                           xaxis_rangeslider_visible=True,showlegend=False,
+                           xaxis_rangeslider_visible=True, showlegend=False,
                            paper_bgcolor='rgba(0,0,0,0)',
-                           plot_bgcolor='rgba(0,0,0,0.5)',font=dict(color='white',size=18
-                            ))
+                           plot_bgcolor='rgba(0,0,0,0.5)', font=dict(color='white', size=18))
 
         # Return backtest figure
         return go.Figure(data=[total, buy_signal, sell_signal], layout=layout)
@@ -233,7 +233,8 @@ class StockData:
                 'All_Time_Maximum': all_time_max,
                 'All_Time_Minimum': all_time_min,
                 "Todays_Change": today_pct_change,
-                'Monthly_Change': monthly_pct_change} 
+                'Monthly_Change': monthly_pct_change}
+
 
 # Function when accessing hovermode
 def onHome(request):
@@ -245,6 +246,7 @@ def onHome(request):
     collect()
 
     return render(request, 'index.html', {'alerts': {'1': 'Congratulations!', '2': 'For being on the best stock site.'}})
+
 
 @never_cache
 # Function when searching for stocks
@@ -269,12 +271,12 @@ def onSubmit(request):
 
     ticker = ticker.upper()
     active_stocks[ticker] = StockData(ticker)
-    
+
     # Entered stock symbol is not in database
     if active_stocks[ticker].remote_data_error:
         active_stocks.clear()
         collect()
-        return render(request, 'index.html', {'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}})        
+        return render(request, 'index.html', {'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}})
 
     # API error occurred and backup file is also not present
     elif active_stocks[ticker].api_error:
@@ -287,6 +289,7 @@ def onSubmit(request):
     plot(active_stocks['fig'], filename='static/single.html', auto_open=False)
 
     return render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alerts': ''})
+
 
 @never_cache
 # Function when comparing stocks
@@ -305,8 +308,8 @@ def onCompare(request):
 
     # If nothing is passed as input
     elif ticker == '':
-        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0],
-            'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'}) if len(active_stocks) > 2 \
+        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0],
+                      'alert': 'You entered nothing! Please enter a valid stock symbol to visualize it.'}) if len(active_stocks) > 2 \
             else render(request, 'Chart.html', {'alerts': {'1': 'You entered nothing!', '2': 'Please enter a valid stock symbol to visualize it.'}})
 
     ticker = ticker.upper()
@@ -319,7 +322,7 @@ def onCompare(request):
             active_stocks.pop(ticker)
             collect()
             return render(request, 'Compare.html', {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
-                'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}}) if len(active_stocks) > 2 \
+                                                    'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}}) if len(active_stocks) > 2 \
                 else render(request, 'Chart.html', {'alerts': {'1': f'{ticker} is not a vaild stock symbol!', '2': 'Please enter a vaild one.'}})
 
         # API error occurred and backup file is also not present
@@ -328,16 +331,16 @@ def onCompare(request):
             collect()
 
             return render(request, 'Compare.html', {'ticker': (ticker for ticker in active_stocks if ticker != 'fig'),
-                'alert': active_stocks[ticker]}) if len(active_stocks) > 2 \
+                                                    'alert': active_stocks[ticker]}) if len(active_stocks) > 2 \
                 else render(request, 'Chart.html', {'alerts': {'1': 'ERROR!', '2': f"API couldn't find {ticker}"}})
-    
+
     # Stock symbol already in comparison
     else:
         print('here')
         # Detect whether refresh has happened or not
         if http_referer[-1] == http_referer[-2]:
             http_referer.pop()
-            return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert': ''})
+            return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''})
 
         # Detect whether back click has happened or not
         try:
@@ -355,20 +358,21 @@ def onCompare(request):
                 http_referer.pop(index)
                 break
         print('here')
-        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alerts': {"1":"Error!","2": f'{ticker} is already in comparison.'}}) \
+        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alerts': {"1": "Error!", "2": f'{ticker} is already in comparison.'}}) \
             if len(active_stocks) > 2 else render(request, 'Chart.html', {'summary': active_stocks[ticker].summary, 'alerts': {'1': 'ERROR!', '2': f"Can't compare {ticker} with itself."}})
         print('here')
 
     # Determining best date range
     start = max(active_stocks[ticker].start_date for ticker in active_stocks if ticker != 'fig')
     end = min(active_stocks[ticker].end_date for ticker in active_stocks if ticker != 'fig')
-    
+
     # Adding ticker trace to current figure
     active_stocks['fig'] = active_stocks[ticker].plotClosingPrice(start=start, end=end,
                                                                   fig=active_stocks['fig'])
 
     plot(active_stocks['fig'], filename='static/multiple.html', auto_open=False)
     return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''})
+
 
 # Function when clicking on trending stocks
 def onTrending(request):
@@ -377,8 +381,9 @@ def onTrending(request):
 
     return HttpResponseRedirect(f'/submit/?text={ticker}')
 
+
 # Function for Simple Moving Average Crossover Strategy
-def onSMA(request):    
+def onSMA(request):
     # Slow (long) and fast (short) moving windows
     short_window = request.GET.get('short_window', 40)
     long_window = request.GET.get('long_window', 100)
@@ -387,8 +392,8 @@ def onSMA(request):
         short_window, long_window = int(short_window), int(long_window)
     except ValueError:
         short_window = 40
-        long_window =  100
-    
+        long_window = 100
+
     if not short_window or not long_window:
         short_window = 40
         long_window = 100
@@ -396,10 +401,11 @@ def onSMA(request):
     for key in active_stocks:
         if key != 'fig':
             plot(active_stocks[key].SMA_CS(short_window=short_window, long_window=long_window),
-                filename='static/sma.html', auto_open=False)
+                 filename='static/sma.html', auto_open=False)
             break
 
     return render(request, 'SMACS.html')
+
 
 # Function on backtest
 def onBacktest(request):
@@ -414,10 +420,11 @@ def onBacktest(request):
     for key in active_stocks:
         if key != 'fig':
             plot(active_stocks[key].backtest(initial_capital=initial_capital, shares=shares),
-                filename='static/back.html', auto_open=False)
+                 filename='static/back.html', auto_open=False)
             break
 
     return render(request, 'Backtest.html')
+
 
 # Function when removing comparison stock
 def onRemoveComparison(request):
@@ -436,9 +443,9 @@ def onRemoveComparison(request):
         # Plot new figure without removed comparison stock
         plot(active_stocks['fig'], filename='static/multiple.html', auto_open=False)
     except:
-        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert':''})
+        return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''})
 
-    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original':tuple(active_stocks)[0], 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'summary': active_stocks[tuple(active_stocks)[0]].summary, 'alerts': {}})
+    return render(request, 'Compare.html', {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'), 'original': tuple(active_stocks)[0], 'alert': ''}) if len(active_stocks['fig'].data) > 1 else render(request, 'Chart.html', {'summary': active_stocks[tuple(active_stocks)[0]].summary, 'alerts': {}})
 
 # Currently active stocks and figure
 active_stocks = {}
