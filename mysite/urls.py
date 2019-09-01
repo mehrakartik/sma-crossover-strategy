@@ -25,11 +25,7 @@ urlpatterns = [
     path('compare/', stock.onCompare, name='compare'),
     path('smacs/', stock.onSMA, name='smacs'),
     path('home/', stock.onHome, name='home'),
-    path('aboutUs/', stock.onAboutUs, name='AboutUs'),
     path('backtest/', stock.onBacktest, name='backtest'),
-    # path('aboutus/',views.fun),
     path('trending/',stock.onTrending,name='onTrending'),
-    # path('getData/',views.getData,name='getData'),
-    # path('getimage/',views.getimage,name='getimage'),
-
+   
 ]
