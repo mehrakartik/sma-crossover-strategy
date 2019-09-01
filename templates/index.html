@@ -23,211 +23,160 @@
 
     <title>Home</title>
   </head>
-  <body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
- >
+  <body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;">
 
-  	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="/home" data-toggle="tooltip" data-placement="top" title="You will go directly to the home">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/aboutus" data-toggle="tooltip" data-placement="top" title="All information about the creaters is here!">About us</a>
-      </li>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-    </ul>
+        <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+          <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+          <ul class="navbar-nav">
+
+            <li class="nav-item active">
+
+              <a class="nav-link" href="/home" data-toggle="tooltip" data-placement="top" title="You will go directly to the home">Home <span class="sr-only">(current)</span></a>
+
+            </li>
+
+            <li class="nav-item">
+
+              <a class="nav-link" href="#bottom" data-toggle="tooltip" data-placement="top" title="All information about the creaters is here!">About us</a>
+
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div>
+        
+          <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
+            <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
+
+          </a> 
+        	
+        </div>
+
+
+    </nav>
+
 
     
+    <!-- Alerts and their type -->
+    {% if alerts.1 == 'Congratulations!' %}
+
+      <div class="alert alert-success alert-dismissible fade show" role="alert" >
+
+    {% else %}
+
+      <div class="alert alert-danger alert-dismissible fade show" role="alert" >
+
+    {% endif %}
+
+        <strong>{{alerts.1}}</strong> {{alerts.2}}
+
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+
+          <span aria-hidden="true">&times;</span>
+
+        </button>
+
+    </div>
+
+  <br><br>
+
+    <form action="/submit" method="get">
+
+      <div class="container">
+          <div class="d-flex justify-content-center">
+            <div class="searchbar">
+              <input class="search_input" type="text" name="text" placeholder="Search...">
+              <button type ="submit"  class="search_icon"><i class="fas fa-search"></i></button>
+            </div>
+          </div>
+      </div>
+    </form>
  
-
-  </div>
-
-  <div>
- 
-
-  
-  <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
-    <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
-  </a> 
-  	
+  <br><br><br>
 
 
 
-  </div>
+    <div class="container"  style="width: 80vw;height: 40vh">
 
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="align-content: center;">
 
-</nav>
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+          </ol>
 
+          <div class="carousel-inner" style="height: 50vh">
+            <div class="carousel-item active">
+              <form action="/trending" method="get">
+                <input type="image" name="AMZN" src='{% static "amazonImg.png" %}' style="align-content: center;height: 40vh;width: 60vw;margin-left: 80px">
+              </form>
+            </div>
 
-<!-- 
-<script type="text/javascript">
-$(".alert").alert('close')
-</script>
- -->
+            <div class="carousel-item">
+              <form action="/trending" method="get">
+                <input type="image" name="MSFT" src='{% static "microsoftImg.png" %}' style="align-content: center;height: 40vh;width: 60vw;margin-left: 80px;" >
+              </form>
 
-<!-- Alerts and their type -->
-{% if alerts.1 == 'Congratulations!' %}
-  <div class="alert alert-success alert-dismissible fade show" role="alert" >
-{% else %}
-  <div class="alert alert-danger alert-dismissible fade show" role="alert" >
-{% endif %}
-  <strong>{{alerts.1}}</strong> {{alerts.2}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+            </div>
 
-<br><br>
-<form action="/submit" method="get">
+            <div class="carousel-item">
+              <form action="/trending" method="get">
+                <input type="image" name="AAPL" src='{% static "aapl.png" %}' style="align-content: center;height: 40vh;width: 20vw;margin-left: 450px;">
+              </form>
 
-<div class="container">
-      <div class="d-flex justify-content-center">
-        <div class="searchbar">
-          <input class="search_input" type="text" name="text" placeholder="Search...">
-          <button type ="submit"  class="search_icon"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="carousel-item">
+              <form action="/trending" method="get">
+                <input type="image" name="GOOG" src='{% static "googleImgRevised.png" %}' style="align-content: center;height: 40vh;width: 50vw;margin-left: 150px;" >
+              </form>
+
+            </div>
+
+          </div>
+
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" style="float:left;">
+              <span class="carousel-control-prev-icon" aria-hidden="true" style="color: black"></span>
+              <span class="sr-only" >Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" style="float: right">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
         </div>
       </div>
+
+        <br><br>
+     
     </div>
-  </form>
-
-
-<!-- <svg width="400" height="110">
-   <rect width="300" height="100" style="stroke-width:3;border-radius: 50px" />    
-	<form action="/submit" method="get">
-		
-		<input type="text" name="text"  placeholder="Search...."  style=" color:#100404; margin-top:10px; margin-left:10px" >
-    <button type="submit" style="margin-left: 0px" ><i class="fa fa-search"></i></button>
-
-  </form> -->
-<!-- </svg> -->
-<br>
-<br>
-<br>
 
 
 
-<!-- <div class= "container-fluid">
-  <h1 align="center" style="color: white">Trending Stocks</h1>
-
-  
-<div class="row">
-
-    <div  class="col">
-      <form action="/trending" method="get">
-      <input type="image" name="AAPL" src='{% static "goog.png" %}' style="float:left;height: 40vh;width: 20vw;margin-left: 200px" >
-      </form>
-    </div>
-    
-     <div  class="col">
-      <form action="/trending" method="get">
-      <input type="image" name="GOOG" src='{% static "aapl.png" %}' style="float:right;height: 40vh;width: 20vw;margin-right: 200px">
-      </form>
-    </div>
-    
-    
-</div>
-<br>
-<br>
-
-  
-<div class="row">
-
-    <div  class="col">
-      <form action="/trending" method="get">
-      <input type="image" name="AAPL" src='{% static "msft.png" %}' style="float:left;height: 40vh;width: 20vw;margin-left: 200px" >
-      </form>
-    </div>
-    
-     <div  class="col">
-      <form action="/trending" method="get">
-      <input type="image" name="GOOG" src='{% static "amzn.png" %}' style="float:right;height: 40vh;width: 20vw;margin-right: 200px">
-      </form>
-    </div>
-    
-    </div>
-    
-    
-</div>
-    
-</div>
-
- -->
-<!-- test code begin -->
-<div class="container"  style="width: 80vw;height: 40vh">
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="align-content: center;">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-  </ol>
-  <div class="carousel-inner" style="height: 50vh">
-    <div class="carousel-item active">
-     <form action="/trending" method="get">
-      <input type="image" name="AMZN" src='{% static "amazonImg.png" %}' style="align-content: center;height: 40vh;width: 60vw;margin-left: 80px">
-      </form>
-    </div>
-    <div class="carousel-item">
-      <form action="/trending" method="get">
-      <input type="image" name="MSFT" src='{% static "microsoftImg.png" %}' style="align-content: center;height: 40vh;width: 60vw;margin-left: 80px;" >
-      </form>
-    </div>
-    <div class="carousel-item">
-       <form action="/trending" method="get">
-      <input type="image" name="AAPL" src='{% static "aapl.png" %}' style="align-content: center;height: 40vh;width: 20vw;margin-left: 450px;">
-      </form>
-    </div>
-    <div class="carousel-item">
-      <form action="/trending" method="get">
-      <input type="image" name="GOOG" src='{% static "googleImgRevised.png" %}' style="align-content: center;height: 40vh;width: 50vw;margin-left: 150px;" >
-      </form>
-    </div>
-  </div>
-
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" style="float:left;">
-    <span class="carousel-control-prev-icon" aria-hidden="true" style="color: black"></span>
-    <span class="sr-only" >Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" style="float: right">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-</div>
+    <div id ="bottom" style="margin-top: 500px;">You are on the bottom of the page</div>
 
 
 
+    <div style="margin-top: 100px"></div>
 
-
-
-<br>
-<br>
-
-
-
- 
-</div>
-
-
-
- <div style="margin-top: 100px"></div>
-
-    <!-- Optional JavaScript
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-
-
-
-
-
+      <!-- Optional JavaScript
+      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
 

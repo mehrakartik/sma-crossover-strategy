@@ -122,19 +122,20 @@
       {% if i == original %}
 
 
-      <div class="col-1"  style="cursor: default;background-color:#9bcfa2 ;margin-left: 10px;margin-right: 50px;border-radius: 10%;height: 40px;">
+      <div class="col-1 "  style="cursor: default;background-color:#9bcfa2 ;margin-left: 10px;margin-right: 50px;border-radius: 25px;height: 40px;">
    <h4 class ="ticker_name" style="color: #4e6351;margin-top: 5px;font-family: Times New Roman, Times, serif;" data-toggle="tooltip" data-placement="top" title="You can't close the data from which you want to compare the others!">{{i}}</h4>
       <!-- <pre style="height: 60px; width: 90px;">{{i}}</pre> -->
 
       </div>
+      <div class="col-1"></div>
         
 
       {% else %}
       
 
-      <div class="col-lg-1" style="width:100px;height: 40px;border-radius: 10%;padding: 4px;align-content:center;background-color:#9bcfa2">
+      <div class="col-lg-1 " style="height: 40px;padding: 4px;align-content:center;background-color:#9bcfa2;width: 200px; border-radius: 25px">
     <form action="/remove" method="get">
-      <pre style="padding-right:13px;padding-top:2px;height: 30px; width: 100px;margin-top: 10px border-radius: 10%; "><button name={{i}} type="submit" class="close" aria-label="Close"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="You can close {{i}} data from here!">{{i}}</i><span aria-hidden="false"></span></button></pre>
+      <pre style="padding-right:13px;padding-top:2px;height: 30px; width: 100px;margin-top: 10px border-radius: 10%;font-size: 10px; "><button name={{i}} type="submit" class="close" aria-label="Close"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="You can close {{i}} data from here!">{{i}}</i><span aria-hidden="false"></span></button></pre>
 </form>
   </div>
   <div class="col-1"></div>

@@ -510,6 +510,9 @@ def onRemoveComparison(request):
                     {'summary': active_stocks[tuple(active_stocks)[0]].summary,
                      'alerts': {}})
 
+def onAboutUs(request):
+    return render(request,'aboutUs.html')
+
 # Currently active stocks and figure
 active_stocks = {}
 http_referer = []
