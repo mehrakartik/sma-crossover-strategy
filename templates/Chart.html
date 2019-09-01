@@ -2,23 +2,23 @@
 <!doctype html>
 {% load staticfiles %}
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %}">
-    <title>Chart</title>
-  </head>
-  <body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
- >
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %}">
+  <title>Chart</title>
+</head>
+<body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
+>
 
 <!-- the navigation bar section -->
 
 
-  	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -35,17 +35,17 @@
     </ul>
 
     
- 
+
 
   </div>
 
   <div>
- 
 
-  
-  <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
-    <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
-  </a> 
+
+
+    <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
+      <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
+    </a> 
     
 
 
@@ -57,37 +57,37 @@
 
 <!-- Alerts while comparing -->
 {% if alerts %}
-  <div class="alert alert-danger alert-dismissible fade show" role="alert" >
-    <strong>{{alerts.1}}</strong> {{alerts.2}}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+<div class="alert alert-danger alert-dismissible fade show" role="alert" >
+  <strong>{{alerts.1}}</strong> {{alerts.2}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 {% endif %}
 
-    
+
 
 <div style="margin-left: 50px">
   <div style="display: flex;">
-<h1>{{summary.ticker}}:</h1>
-  
-  
-  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;" data-toggle="tooltip" data-placement="top" title="latest_diff">{{summary.latest_diff}}</h2>
-  <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;" data-toggle="tooltip" data-placement="top" title="latest_diff_pct">({{summary.latest_diff_pct}}&#37;)</h2>
-</div>
-<br>
+    <h1>{{summary.ticker}}:</h1>
+
+
+    <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;" data-toggle="tooltip" data-placement="top" title="latest_diff">{{summary.latest_diff}}</h2>
+    <h2 style="color: {{summary.color}};margin-left: 10px;margin-right: 10px;padding-top: 6px;" data-toggle="tooltip" data-placement="top" title="latest_diff_pct">({{summary.latest_diff_pct}}&#37;)</h2>
+  </div>
+  <br>
   <div style="display: flex;">
     <div>
-  <h2>Previous Close: {{summary.Previous_Close}}</h2>
-  <h2>Todays Open: {{summary.Todays_Open}}</h2>
-  <h2>All Time Maximum: {{summary.All_Time_Maximum}}</h2>
-</div>
-<div style="margin-left: 50px">
-  <h2>All Time Minimum: {{summary.All_Time_Minimum}}</h2>
-  <h2>Todays Change &#40;&#37;&#41;: {{summary.Todays_Change}}</h2>
-  <h2>Monthly Change &#40;&#37;&#41;: {{summary.Monthly_Change}}</h2>
-</div>
-</div>
+      <h2>Previous Close: {{summary.Previous_Close}}</h2>
+      <h2>Todays Open: {{summary.Todays_Open}}</h2>
+      <h2>All Time Maximum: {{summary.All_Time_Maximum}}</h2>
+    </div>
+    <div style="margin-left: 50px">
+      <h2>All Time Minimum: {{summary.All_Time_Minimum}}</h2>
+      <h2>Todays Change &#40;&#37;&#41;: {{summary.Todays_Change}}</h2>
+      <h2>Monthly Change &#40;&#37;&#41;: {{summary.Monthly_Change}}</h2>
+    </div>
+  </div>
 
 
 
@@ -96,79 +96,78 @@
 <br><br><br>
 
 <div style="margin-top: 30px;" class="container">
-      <ul class="nav nav-tabs" >
-        <li class="nav-item">
-         <form class="form-inline" action="/compare" method="get">
-  
-    
- 
-    
-    <input type="text" name="text" class="form-control"  placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;color:black;border-color:#2a2d31;background-color: white; text-shadow:11; ">
-  
-  
-</form>
-        </li>
-        
-        <li class="nav-item ">
-           <div class="btn-group drodown">
-            
-                  <a class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;">SMA (Crossover Strategy)</a>        
-                  
-                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="border:none;margin-bottom: 2px;">
-                      <span class="sr-only" >Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu" style="background:transparent;border:none;">
+  <ul class="nav nav-tabs" >
+    <li class="nav-item">
+     <form class="form-inline" action="/compare" method="get">
+
+
+
+
+      <input type="text" name="text" class="form-control"  placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;color:black;border-color:#2a2d31;background-color: white; text-shadow:11; ">
+
+
+    </form>
+  </li>
+
+  <li class="nav-item ">
+   <div class="btn-group drodown">
+
+    <a class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;">SMA (Crossover Strategy)</a>        
+
+    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="border:none;margin-bottom: 2px;">
+      <span class="sr-only" >Toggle Dropdown</span>
+    </button>
+    <div class="dropdown-menu" style="background:transparent;border:none;">
 
       <!-- Dropdown menu links -->
 
-                      <div class="row" >
-                       <form action="/smacs" method="get">
-                        <div class="col">
-                        <input type="number" name="short_window" class="form-control"  placeholder="Short window" style="height: 30px; width:180px;text-shadow:11;">
-                      </div>
-                        
-                      <div class="col">
-                        <input type="number" name="long_window" class="form-control"  placeholder="Long window" style="height: 30px; width:180px;text-shadow:11;">
-                       </div>
+      <div class="row" >
+       <form action="/smacs" method="get">
+        <div class="col">
+          <input type="number" name="short_window" class="form-control"  placeholder="Short window" style="height: 30px; width:180px;text-shadow:11;">
+        </div>
 
-                       <div class="col">
-                        <!-- <input type="submit" style=" border-radius: 10%"> -->
-                      <button type="submit"  class=" btn btn-dark btn-sm" >submit</button>
-                      </div>
-                      </form>
+        <div class="col">
+          <input type="number" name="long_window" class="form-control"  placeholder="Long window" style="height: 30px; width:180px;text-shadow:11;">
+        </div>
 
-                            
-                      </div>
-                    </div>
-              </div>
-            </form>
-        </li>
-        <li class="nav-item n">
-        <button class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px;" disabled="true" data-toggle="tooltip" data-placement="top" title="Please first do the SMA!" >Backtest</button>
+        <div class="col">
+          <button type="submit"  class=" btn btn-dark btn-sm" >submit</button>
+        </div>
+      </form>
 
-        </li>
-      </ul>
 
     </div>
+  </div>
+</div>
+</form>
+</li>
+<li class="nav-item n">
+  <button class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px;" disabled="true" data-toggle="tooltip" data-placement="top" title="Please first do the SMA!" >Backtest</button>
+
+</li>
+</ul>
+
+</div>
 </div>
 <div class="container-fluid">
-    <iframe src='{% static "single.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right" style="background: 'https://www.pexels.com/photo/953214/download/?search_query=gradient%2520website%2520background&tracking_id=vu6avlvu9sc';border-spacing: 0px">
-    </iframe>
-  </div> 
+  <iframe src='{% static "single.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right" style="background: 'https://www.pexels.com/photo/953214/download/?search_query=gradient%2520website%2520background&tracking_id=vu6avlvu9sc';border-spacing: 0px">
+  </iframe>
+</div> 
 </div>
 
 
-    
-  </div>
-  <br><br><br>
-  
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</div>
+<br><br><br>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
-  </body>
+</body>
 
 </html>
