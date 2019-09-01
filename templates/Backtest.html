@@ -2,22 +2,22 @@
 <!doctype html>
 {%load staticfiles%}
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %">
 
-    <title>Backtest</title>
-  </head>
-  <body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
- >
+  <title>Backtest</title>
+</head>
+<body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
+>
 
-  	
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -34,17 +34,17 @@
     </ul>
 
     
- 
+
 
   </div>
 
   <div>
- 
 
-  
-  <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
-    <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
-  </a> 
+
+
+    <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
+      <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
+    </a> 
     
 
 
@@ -57,84 +57,75 @@
 
 
 
-  <div style="margin-top: 30px;" class="container">
-      <ul class="nav nav-tabs" >
-        <li class="nav-item">
-         <form class="form-inline" action="/compare" method="get">
-  
-    
- 
-    <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
-    <input type="text" name="text" class="form-control"  placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;border-color:white;background-color: white;text-shadow:11;">
-  
-  
-</form>
-        </li>
-        
-        <li class="nav-item ">
-          <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
-           <div class="btn-group drodown">
-            
-                  <a class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;">SMA (Crossover Strategy)</a>        
-                  
-                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="border:none;margin-bottom: 2px;">
-                      <span class="sr-only" >Toggle Dropdown</span>
-                    </button>
-                    <div class="dropdown-menu" style="background:transparent;border:none;">
-      <!-- Dropdown menu links -->
+<div style="margin-top: 30px;" class="container">
+  <ul class="nav nav-tabs" >
+    <li class="nav-item">
+     <form class="form-inline" action="/compare" method="get">
 
-                            <div class="row" >
-                             <form action="/smacs" method="get">
-                              <div class="col">
-                              <input type="text" name="short_window" class="form-control"  placeholder="Short window" style="height: 30px; width:180px;text-shadow:11;">
-                            </div>
-                              
-                            <div class="col">
-                              <input type="text" name="long_window" class="form-control"  placeholder="Long window" style="height: 30px; width:180px;text-shadow:11;">
-                             </div>
 
-                             <div class="col">
-                              <!-- <input type="submit" style=" border-radius: 10%"> -->
-                            <button type="submit"  class=" btn btn-dark btn-sm"  style="margin-left: 65px;margin-right: 65px;">submit</button>
-                            </div>
-                          </form>
 
-                            
-                        </div>
-                    </div>
-              </div>
-            </form>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px; " data-toggle="tooltip" data-placement="top" title="You are doing backtesting already!">Backtest</a>
+      <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+      <input type="text" name="text" class="form-control"  placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;border-color:white;background-color: white;text-shadow:11;">
 
-        </li>
-      </ul>
 
+    </form>
+  </li>
+
+  <li class="nav-item ">
+    <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
+    <div class="btn-group drodown">
+
+      <a class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="It will show you the simple moving average of 40 days and 100 days" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;">SMA (Crossover Strategy)</a>        
+
+      <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-toggle="tooltip" data-placement="top" title="You can choose  manually short and long window here!" style="border:none;margin-bottom: 2px;">
+        <span class="sr-only" >Toggle Dropdown</span>
+      </button>
+      <div class="dropdown-menu" style="background:transparent;border:none;">
+        <!-- Dropdown menu links -->
+
+        <div class="row" >
+         <form action="/smacs" method="get">
+          <div class="col">
+            <input type="text" name="short_window" class="form-control"  placeholder="Short window" style="height: 30px; width:180px;text-shadow:11;">
+          </div>
+
+          <div class="col">
+            <input type="text" name="long_window" class="form-control"  placeholder="Long window" style="height: 30px; width:180px;text-shadow:11;">
+          </div>
+
+          <div class="col">
+            <!-- <input type="submit" style=" border-radius: 10%"> -->
+            <button type="submit"  class=" btn btn-dark btn-sm"  style="margin-left: 65px;margin-right: 65px;">submit</button>
+          </div>
+        </form>
+
+
+      </div>
     </div>
+  </div>
+</form>
+</li>
+<li class="nav-item">
+  <a class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px; " data-toggle="tooltip" data-placement="top" title="You are doing backtesting already!">Backtest</a>
+
+</li>
+</ul>
+
+</div>
 </div>
 
 <div class="container-fluid">
-    <iframe src='{%static "back.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right" >
-    </iframe>
-  </div> 
+  <iframe src='{%static "back.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right" >
+  </iframe>
+</div> 
 
 
 
-
-
-
-
-    
-	
-
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
 
@@ -144,6 +135,6 @@
 
 
 
-  </body>
+</body>
 
 </html>
