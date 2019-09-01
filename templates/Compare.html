@@ -3,28 +3,28 @@
 
 
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- dynamic button's css -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="{% static 'stylesheet.css'%}" href="">
 
-    <title>Compare</title>
-  </head>
-  <body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
- >
+  <title>Compare</title>
+</head>
+<body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
+>
 
 <!-- the navigation bar section -->
 
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -41,17 +41,17 @@
     </ul>
 
     
- 
+
 
   </div>
 
   <div>
- 
 
-  
-  <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
-    <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
-  </a> 
+
+
+    <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
+      <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
+    </a> 
     
 
 
@@ -61,17 +61,17 @@
 
 </nav>
 
-  <!-- Alerts while comparing -->
+<!-- Alerts while comparing -->
 {% if alerts %}
-  <div class="alert alert-danger alert-dismissible fade show" role="alert" >
-    <strong>{{alerts.1}}</strong> {{alerts.2}}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
+<div class="alert alert-danger alert-dismissible fade show" role="alert" >
+  <strong>{{alerts.1}}</strong> {{alerts.2}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 {% endif %}
 
-  
+
 
 <br>
 <br> 
@@ -79,64 +79,64 @@
 
 
 
-    <div class="container-fluid">
-      
-      <div style="margin-top: 30px;" class="container">
-      <ul class="nav nav-tabs" >
-        <li class="nav-item">
-         <form class="form-inline" action="/compare" method="get">
-  
-    
- 
-    <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
-    <input type="text" name="text" class="form-control"  placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;border-color:white;background-color: white;text-shadow:11;">
-  
-  
-</form>
-        </li>
-        
-        <li class="nav-item ">
-          <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
-           
-            <div>
-                  <button class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="You cannot do SMA analysis while comparing!" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;" disabled="true">SMA (Crossover Strategy)</button>        
-                  </div>            
-                       
-                    
-        </li>
-        <li class="nav-item n">
-        <button class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px;" disabled="true" data-toggle="tooltip" data-placement="top" title="Please first do the SMA!" >Backtest</button>
+<div class="container-fluid">
 
-        </li>
-      </ul>
+  <div style="margin-top: 30px;" class="container">
+    <ul class="nav nav-tabs" >
+      <li class="nav-item">
+       <form class="form-inline" action="/compare" method="get">
 
-    </div>
+
+
+        <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+        <input type="text" name="text" class="form-control"  placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;border-color:white;background-color: white;text-shadow:11;">
+
+
+      </form>
+    </li>
+
+    <li class="nav-item ">
+      <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
+
+      <div>
+        <button class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="You cannot do SMA analysis while comparing!" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;" disabled="true">SMA (Crossover Strategy)</button>        
+      </div>            
+
+
+    </li>
+    <li class="nav-item n">
+      <button class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px;" disabled="true" data-toggle="tooltip" data-placement="top" title="Please first do the SMA!" >Backtest</button>
+
+    </li>
+  </ul>
+
+</div>
 </div>
 
 <div class="container" style="height: 40px;margin-top: 50px">
-    <div class="row " >
+  <div class="row " >
 
 
-      {%for i in tickers%}
+    {%for i in tickers%}
 
-      {% if i == original %}
+    {% if i == original %}
 
 
-      <div class="col-1 "  style="cursor: default;background-color:#9bcfa2 ;margin-left: 10px;margin-right: 50px;border-radius: 25px;height: 40px;">
-   <h4 class ="ticker_name" style="color: #4e6351;margin-top: 5px;font-family: Times New Roman, Times, serif;" data-toggle="tooltip" data-placement="top" title="You can't close the data from which you want to compare the others!">{{i}}</h4>
-      <!-- <pre style="height: 60px; width: 90px;">{{i}}</pre> -->
+    <div class="col-1 "  style="cursor: default;background-color:#9bcfa2 ;margin-left: 10px;margin-right: 50px;border-radius: 25px;height: 40px;">
+     <h4 class ="ticker_name" style="color: #4e6351;margin-top: 5px;font-family: Times New Roman, Times, serif;" data-toggle="tooltip" data-placement="top" title="You can't close the data from which you want to compare the others!">{{i}}</h4>
+     <!-- <pre style="height: 60px; width: 90px;">{{i}}</pre> -->
 
-      </div>
-      <div class="col-1"></div>
-        
+   </div>
+   <div class="col-1"></div>
 
-      {% else %}
-      
 
-      <div class="col-lg-1 " style="height: 40px;padding: 4px;align-content:center;background-color:#9bcfa2;width: 200px; border-radius: 25px">
+   {% else %}
+
+
+   <div class="col-lg-1 " style="height: 40px;padding: 4px;align-content:center;background-color:#9bcfa2;width: 200px; border-radius: 25px">
     <form action="/remove" method="get">
       <pre style="padding-right:13px;padding-top:2px;height: 30px; width: 100px;margin-top: 10px border-radius: 10%;font-size: 10px; "><button name={{i}} type="submit" class="close" aria-label="Close"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="You can close {{i}} data from here!">{{i}}</i><span aria-hidden="false"></span></button></pre>
-</form>
+    </form>
   </div>
   <div class="col-1"></div>
   {% endif %}
@@ -147,42 +147,23 @@
 
 
 
-    <iframe src='{% static "multiple.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right" >
-    </iframe>
-  </div> 
-
-  <!-- </div> -->
-      
+<iframe src='{% static "multiple.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right" >
+</iframe>
+</div> 
 
 
 
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 
 
-
-
-  </div>
-
-
-
-
-
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-
-
-
-
-
-
-
-
-  </body>
+</body>
 
 </html>
