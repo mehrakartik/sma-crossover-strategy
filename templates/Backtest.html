@@ -10,6 +10,8 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %">
+  <!-- social media buttons css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <title>Backtest</title>
 </head>
@@ -28,7 +30,7 @@
         <a class="nav-link" href="/home" data-toggle="tooltip" data-placement="top" title="You will go directly to the home">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#bottom" data-toggle="tooltip" data-placement="top" title="All information about the creaters is here!">About us</a>
+        <a class="nav-link" href="#aboutus" data-toggle="tooltip" data-placement="top" title="All information about the creaters is here!">About us</a>
       </li>
 
     </ul>
@@ -121,28 +123,48 @@
 
 
 
-  <div class="row" id ="bottom" style="margin-top: 500px;">
-    <div class="col" style="float: left;margin-left: 100px;">
-      <h1 >CHETAN SHARMA</h1>
-      <h4 style="color:white;">Mob No. 9716527564</h4>
+  <center>
+  <h3 style="margin-top: 500px">Project repo link:<a href="https://github.com/Kartik-866/sma-crossover-strategy.git" style="color: white;">github.com/Kartik-866/sma-crossover-strategy.git</a></h3>
+</center>
 
-      <a  style="color : white;"> chetan.shm98@gamil.com</a>
-      <a href="https://www.linkedin.com/in/chetan-sharma-1aa38615b" style="color: white;"> www.linkedin.com/in/chetan-sharma-1aa38615b </a>
-      <a href="https://www.github.com/Chetan8076" style="color: white;">www.github.com/Chetan8076</a>
-      
+
+
+
+<!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
+<br><br>
+<div class="container-fluid" style="margin-bottom: 100px;">
+  <div class="row" id ="aboutus" style=";bottom: 0px;">
+    <div class="col" style="float: left;margin-left: 100px;">
+      <h1  >CHETAN SHARMA</h1>
+      <h4 style="color:white;">Mob No. 9716527564</h4>
+      <input type="text"  id="myInput" name="chetan.shm98@gamil.com" value ="chetan.shm98@gamil.com" style="display: none;">
+
+      <a  style="color : white;font: 30px;"> chetan.shm98@gamil.com</a>
+      <button class="fa fa-copy" onclick="myFunction()" style="background: transparent;border:0;padding: 0;color: white;"></button>
+      <div style="display: block;">
+      <a href="https://www.linkedin.com/in/chetan-sharma-1aa38615b" class="fa fa-linkedin" style="background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;"></a>
+      <a href="https://www.github.com/Chetan8076" class="fa fa-github" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; "></a>
     </div>
-    <div class="col" style="margin-left: 600px;margin-right: 40px;float: right;position: right;">
+        
+    </div>
+
+    <div class="col" style="margin-left: 600px;margin-right: 40px;float: right;">
       <h1 >KARTIK MEHRA</h1>
       <h4 style="color:white;">Mob No. 7982939111</h4>
-      <a href="mehrakartik20@gmail.com" style="color : white;">mehrakartik20@gamil.com</a>
-      <a href="https://www.linkedin.com/in/kartikmehra" style="color: white;"> www.linkedin.com/in/kartikmehra </a>
-      <a href="https://www.github.com/Kartik-866" style="color: white;">www.github.com/Kartik-866</a>
+      <input type="text"  id="myInput1" name="mehrakartik20@gmail.com" value ="mehrakartik20@gmail.com" style="display: none;">
+      <a  style="color : white;font: 30px;"> mehrakartik20@gmail.com</a>
+      <button class="fa fa-copy" onclick="myFunction1()" style="background: transparent;border:0;padding: 0;color: white;"></button>
+      <div style="display: block;">
+      <a href="https://www.linkedin.com/in/kartikmehra" class="fa fa-linkedin" style="background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;"></a>
+      <a href="https://www.github.com/Kartik-866" class="fa fa-github" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; "></a>
+    </div>
+
+
     </div>
     
   </div>
-  <div class="container-fluid">
-  <h3 style="margin-left: 330px;margin-top: 30px;">Project repo link:<a href="https://github.com/Kartik-866/sma-crossover-strategy.git" style="color: white;">github.com/Kartik-866/sma-crossover-strategy.git</a></h3>
 </div>
+
 
 
 
@@ -152,6 +174,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+<script type="text/javascript">
+  
+  function myFunction() {
+  /* Get the text field */
+  var copyText = document.getElementById("myInput");
+  /* Select the text field */
+  copyText.select(); 
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+  /* Alert the copied text */
+  alert("Copied the text: " + copyText.value);
+}
+
+function myFunction1() {
+  /* Get the text field */
+  var copyText = document.getElementById("myInput1");
+  /* Select the text field */
+  copyText.select(); 
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+  /* Alert the copied text */
+  alert("Copied the text: " + copyText.value);
+}
+</script>
 
 
 
