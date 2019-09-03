@@ -24,6 +24,8 @@
     width: 450px;
     caret-color:red;
     transition: width 0.4s linear;
+
+
     }
 
     .searchbar:hover > .search_icon{
@@ -46,7 +48,7 @@
 
     .ticker_name:hover {
        
-        /*color:#273429;*/
+        color:#273429;
         color: white
         
     }
