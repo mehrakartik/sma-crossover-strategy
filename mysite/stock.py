@@ -253,7 +253,7 @@ class StockData:
                 'Monthly_Change': monthly_pct_change}
 
 
-# Function when accessing hovermode
+# Function to go/ return home
 def onHome(request):
     # Clearing active stocks and HTTP references on home
     active_stocks.clear()
