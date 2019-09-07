@@ -15,7 +15,7 @@ from datetime import datetime
 import plotly.graph_objs as go
 from plotly.offline import plot
 
-
+# Blueprint of the stock objects
 class StockData:
     def __init__(self, ticker):
         self.remote_data_error = False
