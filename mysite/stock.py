@@ -517,4 +517,3 @@ def onAboutUs(request):
 # Currently active stocks and figure
 active_stocks = {}
 http_referer = []
-
