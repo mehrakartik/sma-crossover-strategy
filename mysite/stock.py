@@ -231,7 +231,6 @@ class StockData:
         return go.Figure(data=[total, buy_signal, sell_signal], layout=layout)
 
     # Summary of the stock
-    @property
     def summary(self):
         previous_close = format(self.stock_df.iloc[-2]['Close'], '.2f')
         today_open = format(self.stock_df.iloc[-1]['Open'], '.2f')
@@ -315,7 +314,7 @@ def onSubmit(request):
     plot(active_stocks['fig'], filename='static/single.html', auto_open=False)
 
     return render(request, 'Chart.html',
-                  {'summary': active_stocks[ticker].summary, 'alerts': ''})
+                  {'summary': active_stocks[ticker].summary(), 'alerts': ''})
 
 
 @never_cache
@@ -407,7 +406,7 @@ def onCompare(request):
                        'alerts': {"1": "Error!", "2": f'{ticker} is already in comparison.'}}) \
             if len(active_stocks) > 2 \
             else render(request, 'Chart.html',
-                        {'summary': active_stocks[ticker].summary,
+                        {'summary': active_stocks[ticker].summary(),
                          'alerts': {'1': 'ERROR!',
                                     '2': f"Can't compare {ticker} with itself."}})
 
@@ -507,7 +506,7 @@ def onRemoveComparison(request):
                    'original': tuple(active_stocks)[0], 'alert': ''}) \
         if len(active_stocks['fig'].data) > 1 \
         else render(request, 'Chart.html',
-                    {'summary': active_stocks[tuple(active_stocks)[0]].summary,
+                    {'summary': active_stocks[tuple(active_stocks)[0]].summary(),
                      'alerts': {}})
 
 
