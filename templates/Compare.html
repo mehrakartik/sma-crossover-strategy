@@ -158,9 +158,10 @@
 
 
 
+<div style="background:#3F729B;">
 
-  <center>
-  <h3 style="margin-top: 500px;">Project repo link:<a href="https://github.com/Kartik-866/sma-crossover-strategy.git" style="color: white;">github.com/Kartik-866/sma-crossover-strategy.git</a></h3>
+   <center style="margin-top: 500px;">
+  <h3 style="margin-left: 330pxy">Project repo link:<a href="https://github.com/Kartik-866/sma-crossover-strategy.git" style="color: white;">github.com/Kartik-866/sma-crossover-strategy.git</a></h3>
 </center>
 
 
@@ -171,16 +172,20 @@
 <div class="container-fluid" style="margin-bottom: 100px;">
   <div class="row" id ="aboutus" style=";bottom: 0px;">
     <div class="col" style="float: left;margin-left: 100px;">
-      <h1  >CHETAN SHARMA</h1>
+      <h1 >CHETAN SHARMA</h1>
       <h4 style="color:white;">Mob No. 9716527564</h4>
       <input type="text"  id="myInput" name="chetan.shm98@gamil.com" value ="chetan.shm98@gamil.com" style="display: none;">
 
-      <a  style="color : white;font: 30px;"> chetan.shm98@gamil.com</a>
-      <button class="fa fa-copy" onclick="myFunction()" style="background: transparent;border:0;padding: 0;color: white;"></button>
-      <div style="display: block;">
-      <a href="https://www.linkedin.com/in/chetan-sharma-1aa38615b" class="fa fa-linkedin" style="background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;"></a>
-      <a href="https://www.github.com/Chetan8076" class="fa fa-github" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; "></a>
-    </div>
+      
+      <div style="display: flex;align-items: center;">
+      <a href="https://www.linkedin.com/in/chetan-sharma-1aa38615b" class="fa fa-linkedin" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Chetan's linkedin profile" style="background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;margin-top: 10px;margin-right: 5px;"></a>
+      <a href="https://www.github.com/Chetan8076" class="fa fa-github" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Chetan's github profile" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; margin-right: 5px;"></a>
+      <input type="image" src="{% static 'gmail.png' %}" onclick="myFunction()" style="background:none;width: 40px;height: 40px;margin-top: 10px;border:none; " data-toggle="tooltip" data-placement="top" title="chetan.shm98@gmail.com, You can copy it by clicking">
+      
+      
+   </div>
+   <p id="myText" class="text-light"></p>
+   
         
     </div>
 
@@ -188,12 +193,17 @@
       <h1 >KARTIK MEHRA</h1>
       <h4 style="color:white;">Mob No. 7982939111</h4>
       <input type="text"  id="myInput1" name="mehrakartik20@gmail.com" value ="mehrakartik20@gmail.com" style="display: none;">
-      <a  style="color : white;font: 30px;"> mehrakartik20@gmail.com</a>
-      <button class="fa fa-copy" onclick="myFunction1()" style="background: transparent;border:0;padding: 0;color: white;"></button>
-      <div style="display: block;">
-      <a href="https://www.linkedin.com/in/kartikmehra" class="fa fa-linkedin" style="background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;"></a>
-      <a href="https://www.github.com/Kartik-866" class="fa fa-github" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; "></a>
+      <!-- <a  style="color : white;font: 30px;"> mehrakartik20@gmail.com</a> -->
+      <!-- <input type="image" src="{% static 'gmail.png' %}" onclick="myFunction1()" style="width: 40px;height: 35px"> -->
+      <!-- <button class="fa fa-copy" onclick="myFunction1()" style="background: transparent;border:0;padding: 0;color: white;"></button> -->
+      <div style="display: flex;align-items: center;">
+      <a href="https://www.linkedin.com/in/kartikmehra" class="fa fa-linkedin" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Kartik's linkedin profile" style="margin-top: 10px;background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;margin-right: 5px;"></a>
+      <a href="https://www.github.com/Kartik-866" class="fa fa-github" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Kartik's github profile" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; margin-right: 5px;"></a>
+      <input type="image" src="{% static 'gmail.png' %}" onclick="myFunction1()" style="background:none;width: 40px;height: 40px;margin-top: 10px;border:none; " data-toggle="tooltip" data-placement="top" title="mehrakartik20@gmail.com, You can copy it by clicking">
+      
     </div>
+    
+    <p id="myText1" class="text-light" style="display: block;"></p>
 
 
     </div>
@@ -201,9 +211,10 @@
   </div>
 </div>
 
-
 <div style="text-align:center;">
 <a href="#Top" style="color: white;">Go to Top</a>
+</div>
+
 </div>
 
 
@@ -225,7 +236,11 @@
   /* Copy the text inside the text field */
   document.execCommand("copy");
   /* Alert the copied text */
-  alert("Copied the text: " + copyText.value);
+  // alert("Copied the text: " + copyText.value);
+  document.getElementById("myText").innerHTML ='<strong class="text-success">Copied!</strong>chetan.shm98@gmail.com ';
+  setTimeout(function(){document.getElementById("myText").innerHTML = '' ;},1000);
+  
+  
 }
 
 function myFunction1() {
@@ -237,7 +252,9 @@ function myFunction1() {
   /* Copy the text inside the text field */
   document.execCommand("copy");
   /* Alert the copied text */
-  alert("Copied the text: " + copyText.value);
+  // alert("Copied the text: " + copyText.value);
+  document.getElementById("myText1").innerHTML ='<strong class="text-success">Copied!</strong>  mehrakartik20@gmail.com  ';
+  setTimeout(function(){document.getElementById("myText1").innerHTML = '' ;},1000);
 }
 </script>
 
