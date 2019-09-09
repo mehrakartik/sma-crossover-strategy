@@ -508,6 +508,7 @@ def onRemoveComparison(request):
 def onAboutUs(request):
     return render(request, 'aboutUs.html')
 
+
 # Currently active stocks and figure
 active_stocks = {}
 http_referer = []
