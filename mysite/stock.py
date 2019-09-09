@@ -201,7 +201,10 @@ class StockData:
         self.portfolio['Returns'] = self.portfolio['Total'].pct_change()
 
         # Plot total
-        total = go.Scatter(x=self.portfolio.index, y=self.portfolio['Total'], name='Total')
+        total = go.Scatter(x=self.portfolio.index, y=self.portfolio['Total'], name='',
+                           hovertemplate='Total: %{y: ,.2f}<br>Profit: %{text: ,.2f}',
+                           text=[f"{self.portfolio['Total'][i] - initial_capital}"
+                                 for i in range(self.portfolio.shape[0])])
 
         # Buy and sell signals
         size = 10
