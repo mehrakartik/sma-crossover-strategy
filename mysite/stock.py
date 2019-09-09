@@ -15,7 +15,7 @@ from datetime import datetime
 import plotly.graph_objs as go
 from plotly.offline import plot
 
-
+# Blueprint of the stock objects
 class StockData:
     def __init__(self, ticker):
         self.remote_data_error = False
@@ -231,7 +231,6 @@ class StockData:
         return go.Figure(data=[total, buy_signal, sell_signal], layout=layout)
 
     # Summary of the stock
-    @property
     def summary(self):
         previous_close = format(self.stock_df.iloc[-2]['Close'], '.2f')
         today_open = format(self.stock_df.iloc[-1]['Open'], '.2f')
@@ -254,7 +253,7 @@ class StockData:
                 'Monthly_Change': monthly_pct_change}
 
 
-# Function when accessing hovermode
+# Function to go/ return home
 def onHome(request):
     # Clearing active stocks and HTTP references on home
     active_stocks.clear()
@@ -315,7 +314,7 @@ def onSubmit(request):
     plot(active_stocks['fig'], filename='static/single.html', auto_open=False)
 
     return render(request, 'Chart.html',
-                  {'summary': active_stocks[ticker].summary, 'alerts': ''})
+                  {'summary': active_stocks[ticker].summary(), 'alerts': ''})
 
 
 @never_cache
@@ -407,7 +406,7 @@ def onCompare(request):
                        'alerts': {"1": "Error!", "2": f'{ticker} is already in comparison.'}}) \
             if len(active_stocks) > 2 \
             else render(request, 'Chart.html',
-                        {'summary': active_stocks[ticker].summary,
+                        {'summary': active_stocks[ticker].summary(),
                          'alerts': {'1': 'ERROR!',
                                     '2': f"Can't compare {ticker} with itself."}})
 
@@ -507,7 +506,7 @@ def onRemoveComparison(request):
                    'original': tuple(active_stocks)[0], 'alert': ''}) \
         if len(active_stocks['fig'].data) > 1 \
         else render(request, 'Chart.html',
-                    {'summary': active_stocks[tuple(active_stocks)[0]].summary,
+                    {'summary': active_stocks[tuple(active_stocks)[0]].summary(),
                      'alerts': {}})
 
 
@@ -518,4 +517,3 @@ def onAboutUs(request):
 # Currently active stocks and figure
 active_stocks = {}
 http_referer = []
-
