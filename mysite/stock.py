@@ -55,7 +55,6 @@ class StockData:
             except FileNotFoundError:
                 self.api_error = True
                 return None
-
         # Start and end date of the stock's data
         self._start_date = self.stock_df.index[0]
         self._end_date = self.stock_df.index[-1]
@@ -272,10 +271,8 @@ def onHome(request):
 def onSubmit(request):
     # Searched ticker
     ticker = request.GET.get('text', None)
-
     # HTTP reference of the page
     http_referer.append((request.META['HTTP_REFERER'], ticker))
-
     # Auto submit without any input
     if ticker is None:
         return HttpResponse('ERROR!')
@@ -292,7 +289,6 @@ def onSubmit(request):
 
     ticker = ticker.upper()
     active_stocks[ticker] = StockData(ticker)
-
     # Entered stock symbol is not in database
     if active_stocks[ticker].remote_data_error:
         active_stocks.clear()
@@ -438,7 +434,6 @@ def onSMA(request):
     # Slow (long) and fast (short) moving windows
     short_window = request.GET.get('short_window', 40)
     long_window = request.GET.get('long_window', 100)
-
     try:
         short_window, long_window = int(short_window), int(long_window)
     except ValueError:
@@ -464,7 +459,6 @@ def onBacktest(request):
     # Taking initial capital and shares as input
     initial_capital = request.GET.get('initial_capital', 1000000)
     shares = request.GET.get('shares', 100)
-
     if not initial_capital or not shares:
         initial_capital = 1000000
         shares = 100
