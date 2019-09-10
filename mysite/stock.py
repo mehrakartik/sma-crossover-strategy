@@ -99,7 +99,8 @@ class StockData:
 
         # Data to plot
         data = go.Scatter(x=ranged_df.index,
-                          y=ranged_df['Close'], name=self.ticker)
+                          y=ranged_df['Close'], name=self.ticker,
+                          hovertemplate='$%{y:,.2f}')
 
         # Figure layout
         layout = go.Layout(xaxis={'title': 'Date'},
@@ -146,9 +147,11 @@ class StockData:
 
         # Short and long moving averages
         short_avg = go.Scatter(x=self.signals.index, y=self.signals[f'Short ({short_window} days)'],
-                               name=f'Short ({short_window} days)')
+                               name=f'Short ({short_window} days)',
+                               hovertemplate='$%{y:,.2f}')
         long_avg = go.Scatter(x=self.signals.index, y=self.signals[f'Long ({long_window} days)'],
-                              name=f'Long ({long_window} days)')
+                              name=f'Long ({long_window} days)',
+                              hovertemplate='$%{y:,.2f}')
 
         # Buy and sell signals
         size = 10
@@ -178,7 +181,6 @@ class StockData:
                          layout=layout)
 
     # Backtesting
-    # Activate this function only after SMA_CS has been executed
     def backtest(self, initial_capital=1000000, shares=100):
         # Dataframe 'portfolio' to backtest SMA-CS
         self.portfolio = pd.DataFrame(index=self.signals.index)
@@ -200,7 +202,7 @@ class StockData:
 
         # Plot total
         total = go.Scatter(x=self.portfolio.index, y=self.portfolio['Total'], name='',
-                           hovertemplate='Total: %{y: ,.2f}<br>Profit: %{text: ,.2f}',
+                           hovertemplate='Total: $%{y:,.2f}<br>Profit: $%{text:,.2f}',
                            text=[f"{self.portfolio['Total'][i] - initial_capital}"
                                  for i in range(self.portfolio.shape[0])])
 
