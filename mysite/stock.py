@@ -196,10 +196,7 @@ class StockData:
         self.portfolio['Cash'] = initial_capital - self.portfolio['Diff'].multiply(self.stock_df['Adj Close']).cumsum()
 
         # Total at an instant
-        self.portfolio['Total'] = self.portfolio['Holdings'] + self.portfolio['Cash']
-
-        # Returns of stocks
-        self.portfolio['Returns'] = self.portfolio['Total'].pct_change()
+        self.portfolio['Total'] = self.portfolio['Holdings'] + self.portfolio['Cash']        
 
         # Plot total
         total = go.Scatter(x=self.portfolio.index, y=self.portfolio['Total'], name='',
@@ -381,7 +378,6 @@ def onCompare(request):
 
     # Stock symbol already in comparison
     else:
-        print('here')
         # Detect whether refresh has happened or not
         if http_referer[-1] == http_referer[-2]:
             http_referer.pop()
@@ -404,7 +400,6 @@ def onCompare(request):
             if ref[1] == ticker:
                 http_referer.pop(index)
                 break
-        print('here')
         return render(request, 'Compare.html',
                       {'tickers': (ticker for ticker in active_stocks if ticker != 'fig'),
                        'original': tuple(active_stocks)[0],
