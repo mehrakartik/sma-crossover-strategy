@@ -1,265 +1,165 @@
-<!doctype html>
-{% load staticfiles %}
-
-
+<!doctype html>{% load staticfiles %}
 <html lang="en">
+
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
   <!-- social media buttons css -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- dynamic button's css -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="{% static 'stylesheet.css'%}" href="">
-
   <title>Compare</title>
 </head>
-<body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;"
->
 
-<!-- the navigation bar section -->
-
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="/home" data-toggle="tooltip" data-placement="top" title="You will go directly to the home">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#aboutus" data-toggle="tooltip" data-placement="top" title="All information about the creaters is here!">About us</a>
-      </li>
-
-    </ul>
-
-    
-
-
+<body style="background: url('{%static 'bgR.png'%}') no-repeat center center fixed; -webkit-background-size: cover;-moz-background-size: cover;-o-background-size: cover;background-size: cover;">
+  <!-- the navigation bar section -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="Just tap! and we will go directly to home page">Stocks</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active"> <a class="nav-link" href="/home" data-toggle="tooltip" data-placement="top" title="You will go directly to the home">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item"> <a class="nav-link" href="#aboutus" data-toggle="tooltip" data-placement="top" title="All information about the creaters is here!">About us</a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
+        <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
+      </a>
+    </div>
+  </nav>
+  <!-- Alerts while comparing -->{% if alerts %}
+  <div class="alert alert-danger alert-dismissible fade show" role="alert"> <strong>{{alerts.1}}</strong> {{alerts.2}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span>
+    </button>
+  </div>{% endif %}
+  <br>
+  <br>
+  <!-- <button>"hello"</button> -->
+  <div class="container-fluid">
+    <div style="margin-top: 30px;" class="container">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <form class="form-inline" action="/compare" method="get">
+            <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
+            <input type="text" name="text" class="form-control" placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;color:black;border-color:#2a2d31;background-color: white; text-shadow:11; ">
+          </form>
+        </li>
+        <li class="nav-item ">
+          <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
+          <div>
+            <button class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="You cannot do SMA analysis while comparing!" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;" disabled="true">SMA (Crossover Strategy)</button>
+          </div>
+        </li>
+        <li class="nav-item n">
+          <button class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px;" disabled="true" data-toggle="tooltip" data-placement="top" title="Please first do the SMA!">Backtest</button>
+        </li>
+      </ul>
+    </div>
   </div>
-
-  <div>
-
-
-
-    <a class="navbar-brand" href="/home" data-toggle="tooltip" data-placement="top" title="You can reach directly the home page with tapping it!">
-      <img src='{% static "stock.png" %}' alt="Logo" style="height:60px;">
-    </a> 
-    
-
-
-
-  </div>
-
-
-</nav>
-
-<!-- Alerts while comparing -->
-{% if alerts %}
-<div class="alert alert-danger alert-dismissible fade show" role="alert" >
-  <strong>{{alerts.1}}</strong> {{alerts.2}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-{% endif %}
-
-
-
-<br>
-<br> 
-<!-- <button>"hello"</button> -->
-
-
-
-<div class="container-fluid">
-
-  <div style="margin-top: 30px;" class="container">
-    <ul class="nav nav-tabs" >
-      <li class="nav-item">
-       <form class="form-inline" action="/compare" method="get">
-
-
-
-        <!-- <label for="inputPassword2" class="sr-only">Password</label> -->
-        <input type="text" name="text" class="form-control"  placeholder="Compare..." data-toggle="tooltip" data-placement="top" title="You can compare stocks by entering its name!" style="height: 40px;color:black;border-color:#2a2d31;background-color: white; text-shadow:11; ">
-
-
-      </form>
-    </li>
-
-    <li class="nav-item ">
-      <!-- <a class="nav-link active" href="#">SMA (Crossover Strategy)</a> -->
-
-      <div>
-        <button class="nav-link btn btn-danger" data-toggle="tooltip" data-placement="top" title="You cannot do SMA analysis while comparing!" href="/smacs" style="margin-left: 10px;border: none;margin-bottom: 2px;" disabled="true">SMA (Crossover Strategy)</button>        
-      </div>            
-
-
-    </li>
-    <li class="nav-item n">
-      <button class="nav-link btn btn-primary" href="/backtest" style="margin-left: 10px;border:none;margin-bottom: 2px;" disabled="true" data-toggle="tooltip" data-placement="top" title="Please first do the SMA!" >Backtest</button>
-
-    </li>
-  </ul>
-
-</div>
-</div>
-
-<div class="container" style="height: 40px;margin-top: 50px">
-  <div class="row " >
-
-
-    {%for i in tickers%}
-
-    {% if i == original %}
-
-
-    <div class="col-1 "  style="cursor: default;background-color:#9bcfa2 ;margin-left: 10px;margin-right: 50px;border-radius: 25px;height: 40px;">
-     <h4 class ="ticker_name" style="color: #4e6351;margin-top: 5px;font-family: Times New Roman, Times, serif;" data-toggle="tooltip" data-placement="top" title="You can't close the data from which you want to compare the others!">{{i}}</h4>
-     <!-- <pre style="height: 60px; width: 90px;">{{i}}</pre> -->
-
-   </div>
-   <div class="col-1"></div>
-
-
-   {% else %}
-
-
-   <div class="col-lg-1 " style="height: 40px;padding: 4px;align-content:center;background-color:#9bcfa2;width: 200px; border-radius: 25px">
-    <form action="/remove" method="get">
-      <pre style="padding-right:13px;padding-top:2px;height: 30px; width: 100px;margin-top: 10px border-radius: 10%;font-size: 10px; "><button name={{i}} type="submit" class="close" aria-label="Close"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="You can close {{i}} data from here!">{{i}}</i><span aria-hidden="false"></span></button></pre>
-    </form>
-  </div>
-  <div class="col-1"></div>
-  {% endif %}
-  {% endfor %}
-</div>
-
-</div>
-
-<div class="container-fluid" style="padding-bottom: 1000px;">
-
-<iframe src='{% static "multiple.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right" >
-</iframe>
-</div> 
-
-
-
-
-
-<div style="background:#3F729B;">
-
-   <center style="margin-top: 500px;">
-  <h3 style="margin-left: 330pxy">Project repo link:<a href="https://github.com/Kartik-866/sma-crossover-strategy.git" style="color: white;">github.com/Kartik-866/sma-crossover-strategy.git</a></h3>
-</center>
-
-
-
-
-<!-- <br><br><br><br><br><br><br><br><br><br><br><br><br><br> -->
-<br><br>
-<div class="container-fluid" style="margin-bottom: 100px;">
-  <div class="row" id ="aboutus" style=";bottom: 0px;">
-    <div class="col" style="float: left;margin-left: 100px;">
-      <h1 >CHETAN SHARMA</h1>
-      <h4 style="color:white;">Mob No. 9716527564</h4>
-      <input type="text"  id="myInput" name="chetan.shm98@gamil.com" value ="chetan.shm98@gamil.com" style="display: none;">
-
-      
-      <div style="display: flex;align-items: center;">
-      <a href="https://www.linkedin.com/in/chetan-sharma-1aa38615b" class="fa fa-linkedin" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Chetan's linkedin profile" style="background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;margin-top: 10px;margin-right: 5px;"></a>
-      <a href="https://www.github.com/Chetan8076" class="fa fa-github" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Chetan's github profile" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; margin-right: 5px;"></a>
-      <input type="image" src="{% static 'gmail.png' %}" onclick="myFunction()" style="background:none;width: 40px;height: 40px;margin-top: 10px;border:none; " data-toggle="tooltip" data-placement="top" title="chetan.shm98@gmail.com, You can copy it by clicking">
-      
-      
-   </div>
-   <p id="myText" class="text-light"></p>
-   
+  <!-- Dynamic buttons -->
+  <div class="container" style="height: 40px;margin-top: 50px">
+    <div class="row ">{%for i in tickers%} 
+      {% if i == original %}
+      <div class="col-1 " style="cursor: default;background-color:#9bcfa2 ;margin-left: 10px;margin-right: 50px;border-radius: 25px;height: 40px;">
+        <h4 class="ticker_name" style="color: #4e6351;margin-top: 5px;font-family: Times New Roman, Times, serif;" data-toggle="tooltip" data-placement="top" title="You can't close the data from which you want to compare the others!">{{i}}</h4>
         
-    </div>
-
-    <div class="col" style="margin-left: 600px;margin-right: 40px;float: right;">
-      <h1 >KARTIK MEHRA</h1>
-      <h4 style="color:white;">Mob No. 7982939111</h4>
-      <input type="text"  id="myInput1" name="mehrakartik20@gmail.com" value ="mehrakartik20@gmail.com" style="display: none;">
-      <!-- <a  style="color : white;font: 30px;"> mehrakartik20@gmail.com</a> -->
-      <!-- <input type="image" src="{% static 'gmail.png' %}" onclick="myFunction1()" style="width: 40px;height: 35px"> -->
-      <!-- <button class="fa fa-copy" onclick="myFunction1()" style="background: transparent;border:0;padding: 0;color: white;"></button> -->
-      <div style="display: flex;align-items: center;">
-      <a href="https://www.linkedin.com/in/kartikmehra" class="fa fa-linkedin" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Kartik's linkedin profile" style="margin-top: 10px;background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;margin-right: 5px;"></a>
-      <a href="https://www.github.com/Kartik-866" class="fa fa-github" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Kartik's github profile" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; margin-right: 5px;"></a>
-      <input type="image" src="{% static 'gmail.png' %}" onclick="myFunction1()" style="background:none;width: 40px;height: 40px;margin-top: 10px;border:none; " data-toggle="tooltip" data-placement="top" title="mehrakartik20@gmail.com, You can copy it by clicking">
-      
-    </div>
-    
-    <p id="myText1" class="text-light" style="display: block;"></p>
-
-
-    </div>
-    
+      </div>
+      <div class="col-1"></div>{% else %}
+      <div class="col-lg-1 " style="height: 40px;padding: 4px;align-content:center;background-color:#9bcfa2;width: 200px; border-radius: 25px">
+        <form action="/remove" method="get"> <pre style="padding-right:13px;padding-top:2px;height: 30px; width: 100px;margin-top: 10px border-radius: 10%;font-size: 10px; "><button name={{i}} type="submit" class="close" aria-label="Close"><i class="fa fa-close" data-toggle="tooltip" data-placement="top" title="You can close {{i}} data from here!">{{i}}</i><span aria-hidden="false"></span></button></pre>
+        </form>
+      </div>
+      <div class="col-1"></div>
+    {% endif %}
+    {% endfor %}
+   </div>
   </div>
-</div>
-
-<div style="text-align:center;">
+  <div class="container-fluid" style="padding-bottom: 1000px;">
+    <iframe src='{% static "multiple.html"%}' frameborder="0" scrolling="no" width="100%" height="800" align="right"></iframe>
+  </div>
+  <!-- About us section -->
+  <div style="background: rgba(0,0,0,0.6)">
+    <center style="margin-top: 500px;padding-top: 50px">
+      
+      <a href="https://github.com/Kartik-866/sma-crossover-strategy.git" class="fa fa-github" data-toggle="tooltip" data-placement="top" title="Project link" style="margin-top: 10px;background: #24292E;color: white;width: 80px;height:80px;font-size: 80px;text-align: center;vertical-align: center; text-decoration: none; margin-right: 5px;"></a>
+    </center>
+    <br><br><br><br><br><br><br>
+    
+    <div class="container-fluid" style="margin-bottom: 100px;color: white;">
+      <div class="row" id="aboutus" style=";bottom: 0px;">
+        <div class="col" style="float: left;margin-left: 100px;">
+          <h1>CHETAN SHARMA</h1>
+          <h4 style="color:white;">Contact: 9716527564</h4>
+          <input type="text" id="myInput" name="chetan.shm98@gamil.com" value="chetan.shm98@gamil.com" style="display: none;">
+          <div style="display: flex;align-items: center;">
+            <a href="https://www.linkedin.com/in/chetan-sharma-1aa38615b" class="fa fa-linkedin" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Chetan's linkedin profile" style="background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;margin-top: 10px;margin-right: 5px;"></a>
+            <a href="https://www.github.com/Chetan8076" class="fa fa-github" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Chetan's github profile" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; margin-right: 5px;"></a>
+            <input type="image" src="{% static 'gmail.png' %}" onclick="myFunction()" style="background:none;width: 40px;height: 40px;margin-top: 10px;border:none; " data-toggle="tooltip" data-placement="top" title="chetan.shm98@gmail.com, You can copy it by clicking">
+          </div>
+          <p id="myText" class="text-light"></p>
+        </div>
+        <div class="col" style="margin-left: 600px;margin-right: 40px;float: right;">
+          <h1>KARTIK MEHRA</h1>
+          <h4 style="color:white;">Contact: 7982939111</h4>
+          <input type="text" id="myInput1" name="mehrakartik20@gmail.com" value="mehrakartik20@gmail.com" style="display: none;">
+          
+          <div style="display: flex;align-items: center;">
+            <a href="https://www.linkedin.com/in/kartikmehra" class="fa fa-linkedin" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Kartik's linkedin profile" style="margin-top: 10px;background: #007bb5;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none;margin-right: 5px;"></a>
+            <a href="https://www.github.com/Kartik-866" class="fa fa-github" data-toggle="tooltip" data-placement="top" title="Just Tap and you will go the Kartik's github profile" style="margin-top: 10px;background: #24292E;color: white;width: 40px;height:40px;font-size: 35px;text-align: center;vertical-align: center; text-decoration: none; margin-right: 5px;"></a>
+            <input type="image" src="{% static 'gmail.png' %}" onclick="myFunction1()" style="background:none;width: 40px;height: 40px;margin-top: 10px;border:none; " data-toggle="tooltip" data-placement="top" title="mehrakartik20@gmail.com, You can copy it by clicking">
+          </div>
+          <p id="myText1" class="text-light" style="display: block;"></p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;">
 <a href="#Top" style="color: white;">Go to Top</a>
-</div>
-
-</div>
-
-
-
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-<script type="text/javascript">
-  
-  function myFunction() {
-  /* Get the text field */
-  var copyText = document.getElementById("myInput");
-  /* Select the text field */
-  copyText.select(); 
-  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-  /* Copy the text inside the text field */
-  document.execCommand("copy");
-  /* Alert the copied text */
-  // alert("Copied the text: " + copyText.value);
-  document.getElementById("myText").innerHTML ='<strong class="text-success">Copied!</strong>chetan.shm98@gmail.com ';
-  setTimeout(function(){document.getElementById("myText").innerHTML = '' ;},1000);
-  
-  
-}
-
-function myFunction1() {
-  /* Get the text field */
-  var copyText = document.getElementById("myInput1");
-  /* Select the text field */
-  copyText.select(); 
-  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-  /* Copy the text inside the text field */
-  document.execCommand("copy");
-  /* Alert the copied text */
-  // alert("Copied the text: " + copyText.value);
-  document.getElementById("myText1").innerHTML ='<strong class="text-success">Copied!</strong>  mehrakartik20@gmail.com  ';
-  setTimeout(function(){document.getElementById("myText1").innerHTML = '' ;},1000);
-}
-</script>
-
-
-
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    function myFunction() {
+      /* Get the text field */
+      var copyText = document.getElementById("myInput");
+      /* Select the text field */
+      copyText.select(); 
+      copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      /* Alert the copied text */
+      // alert("Copied the text: " + copyText.value);
+      document.getElementById("myText").innerHTML ='<strong class="text-success">Copied!</strong>chetan.shm98@gmail.com ';
+      setTimeout(function(){document.getElementById("myText").innerHTML = '' ;},1000);
+      
+      
+    }
+    
+    function myFunction1() {
+      /* Get the text field */
+      var copyText = document.getElementById("myInput1");
+      /* Select the text field */
+      copyText.select(); 
+      copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+      /* Copy the text inside the text field */
+      document.execCommand("copy");
+      /* Alert the copied text */
+      // alert("Copied the text: " + copyText.value);
+      document.getElementById("myText1").innerHTML ='<strong class="text-success">Copied!</strong>  mehrakartik20@gmail.com  ';
+      setTimeout(function(){document.getElementById("myText1").innerHTML = '' ;},1000);
+    }
+  </script>
 </body>
 
 </html>
