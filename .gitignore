@@ -1,14 +1,10 @@
-# Virtualenv
+# Virtual environment
 smaenv
 
-# Temporary file
-Practice.py
-
-# Jupyter checkpoints
-.ipynb_checkpoints
+# Static files
+static
 
 # Datasets
-mysite/Datasets
 Datasets
 
 ### Django ###
