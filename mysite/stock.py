@@ -22,7 +22,6 @@ class StockData:
         self.remote_data_error = False
         self.api_error = False
         self._ticker = ticker.upper()
-        # start = datetime(1950, 1, 1)
         end = datetime.today()
 
         try:
