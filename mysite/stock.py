@@ -153,7 +153,7 @@ class StockData:
                               hovertemplate='$%{y:,.2f}')
 
         # Buy and sell signals
-        size = 10
+        size = 15
         buy_signal = go.Scatter(x=self.signals[self.signals['Positions'] == 1].index,
                                 y=self.signals[self.signals['Positions'] == 1][f'Short ({short_window} days)'],
                                 marker={'symbol': 'triangle-up-dot', 'size': size, 'color': 'green'},
@@ -206,7 +206,7 @@ class StockData:
                                  for i in range(self.portfolio.shape[0])])
 
         # Buy and sell signals
-        size = 10
+        size = 15
         buy_signal = go.Scatter(x=self.portfolio[self.signals['Positions'] == 1].index,
                                 y=self.portfolio[self.signals['Positions'] == 1]['Total'],
                                 marker={'symbol': 'triangle-up-dot',
